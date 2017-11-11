@@ -1,0 +1,25 @@
+{
+  "name": "alli",
+  "version": "1.0.0",
+  "description": "A Messenger Bot for Tech Allies ",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "start:dev": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pllearns/alli.git"
+  },
+  "author": "Alissa Renz and Phillip Lorenzo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pllearns/alli/issues"
+  },
+  "homepage": "https://github.com/pllearns/alli#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2"
+  }
+}
