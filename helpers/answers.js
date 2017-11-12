@@ -59,5 +59,6 @@ const sendTextMessage = (recipientId, messageText) => {
 
 module.exports = {
   sendIntroMessage,
-  sendAdditionalInfoMessage
+  sendAdditionalInfoMessage,
+  sendTextMessage
 }
