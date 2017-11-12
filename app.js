@@ -33,22 +33,24 @@ app.get('/webhook', (req, res) => {
 })
 
 app.post('/webhook', (req, res) => {
+  let data = req.body
 
-  let body = req.body
+  if (data.object === 'page') {
+    data.entry.forEach((entry) => {
+      let pageID = entry.id
+      let timeOfEvent = entry.time
 
-  if (body.object === 'page') {
-
-    body.entry.forEach(function (entry) {
-
-      let webhookEvent = entry.messaging[0]
-      console.log(webhookEvent)
+      entry.messaging.forEach((event) => {
+        if (event.message) {
+          receivedMessage(event)
+        } else {
+          console.log('Webhook received unknown event', event)
+        }
+      })
     })
 
-    res.status(200).send('EVENT_RECEIVED')
-  } else {
-    res.sendStatus(404)
+    res.sendStatus(200)
   }
-
 })
 
 app.listen(port, () => {
