@@ -22,7 +22,7 @@ const receivedMessage = (event) => {
         sendIntroMessage(senderID)
         break
 
-      case 'star wars the last jedi':
+      case 'Where can I get more info?':
         sendAdditionalInfoMessage(senderID)
         break
 
