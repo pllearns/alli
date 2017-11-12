@@ -12,35 +12,43 @@ app.get('/', (req, res) => {
 })
 
 app.get('/webhook', (req, res) => {
-  if (req.query['hub.mode'] === 'subscribe' &&
-    req.query['hub.verify_token'] === process.env.VERIFY_TOKEN) {
-    console.log("Validating webhook")
-    res.status(200).send(req.query['hub.challenge'])
-  } else {
-    console.error("Failed validation. Make sure the validation tokens match!")
-    res.sendStatus(403);
+
+  let VERIFY_TOKEN = process.env.VERIFY_TOKEN
+
+  let mode = req.query['hub.mode']
+  let token = req.query['hub.verify_token']
+  let challenge = req.query['hub.challenge']
+
+  if (mode && token) {
+
+    if (mode === 'subscribe' && token === VERIFY_TOKEN) {
+
+      console.log('WEBHOOK_VERIFIED')
+      res.status(200).send(challenge)
+
+    } else {
+      res.sendStatus(403)
+    }
   }
 })
 
 app.post('/webhook', (req, res) => {
-  let data = req.body
 
-  if (data.object === 'page') {
-    data.entry.forEach((entry) => {
-      let pageID = entry.id
-      let timeOfEvent = entry.time
+  let body = req.body
 
-      entry.messaging.forEach((event) => {
-        if (event.message) {
-          receivedMessage(event)
-        } else {
-          console.log('Webhook received unknown event', event)
-        }
-      })
+  if (body.object === 'page') {
+
+    body.entry.forEach(function (entry) {
+
+      let webhookEvent = entry.messaging[0]
+      console.log(webhookEvent)
     })
 
-    res.sendStatus(200)
+    res.status(200).send('EVENT_RECEIVED')
+  } else {
+    res.sendStatus(404)
   }
+
 })
 
 app.listen(port, () => {
