@@ -13,7 +13,6 @@ const sendIntroMessage = (recipientId) => {
           elements: [{
             title: "Alli-Bot Into",
             subtitle: "Welcome to Alli-bot",
-            text: "I am chatBot that helps you find opportunities in tech teh defy convention and tradition. Let's shake up the pipeline",
           }]
         }
       }
@@ -35,7 +34,6 @@ const sendAdditionalInfoMessage = (recipientId) => {
           elements: [{
             title: "Additional Info",
             subtitle: "For additional info on Alli-Bot, please check out these resources: ",
-            text: "Events: [we will soon have current events for you to attend], Job Opps: [jobs!!], Mentorship: [Let's find you a mentor!]",
           }]
         }
       }
