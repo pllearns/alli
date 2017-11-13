@@ -1,24 +1,35 @@
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
+const receivedMessage = require('./helpers/helpers')
+
+const port = process.env.PORT || 3000
 
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
-
-const port = process.env.PORT || 3000
 
 app.get('/', (req, res) => {
   res.send('This is the Alli App')
 })
 
 app.get('/webhook', (req, res) => {
-  if (req.query['hub.mode'] === 'subscribe' &&
-    req.query['hub.verify_token'] === process.env.VERIFY_TOKEN) {
-    console.log("Validating webhook")
-    res.status(200).send(req.query['hub.challenge'])
-  } else {
-    console.error("Failed validation. Make sure the validation tokens match!")
-    res.sendStatus(403);
+
+  let VERIFY_TOKEN = process.env.VERIFY_TOKEN
+
+  let mode = req.query['hub.mode']
+  let token = req.query['hub.verify_token']
+  let challenge = req.query['hub.challenge']
+
+  if (mode && token) {
+
+    if (mode === 'subscribe' && token === VERIFY_TOKEN) {
+
+      console.log('WEBHOOK_VERIFIED')
+      res.status(200).send(challenge)
+
+    } else {
+      res.sendStatus(403)
+    }
   }
 })
 
