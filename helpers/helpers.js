@@ -26,6 +26,10 @@ const receivedMessage = (event) => {
         sendAdditionalInfoMessage(senderID)
         break
 
+      case 'I need help':
+        sendResourceOfTheDayMessage(senderID)
+        break
+
       default:
         sendTextMessage(senderID, messageText)
     }
