@@ -57,15 +57,15 @@ const sendTextMessage = (recipientId, messageText) => {
     }
   }
 
-  function handleMessage(messageData) {
-    const greeting = firstEntity(messageData.nlp, 'greeting');
+  function handleMessage(message) {
+    const greeting = firstEntity(message.nlp, 'greeting');
     if (greeting && greeting.confidence > 0.8) {
       sendResponse('Hi There!')
     } else {
-      callSendAPI(messageData)
+      callSendAPI(message)
     }
   }
-  callSendAPI(messageData)
+  handleMessage(messageData)
 }
 
 module.exports = {
