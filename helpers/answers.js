@@ -21,6 +21,7 @@ const sendIntroMessage = (recipientId) => {
   callSendAPI(messageData)
 }
 
+
 const sendAdditionalInfoMessage = (recipientId) => {
   let messageData = {
     recipient: {
@@ -42,6 +43,10 @@ const sendAdditionalInfoMessage = (recipientId) => {
   callSendAPI(messageData)
 }
 
+function firstEntity(nlp, name) {
+  return nlp && nlp.entities && nlp.entities && nlp.entities[name] && nlp.entities[name][0];
+}
+
 const sendTextMessage = (recipientId, messageText) => {
   let messageData = {
     recipient: {
@@ -52,6 +57,14 @@ const sendTextMessage = (recipientId, messageText) => {
     }
   }
 
+  function handleMessage(messageData) {
+    const greeting = firstEntity(messageData.nlp, 'greeting');
+    if (greeting && greeting.confidence > 0.8) {
+      sendResponse('Hi There!')
+    } else {
+      callSendAPI(messageData)
+    }
+  }
   callSendAPI(messageData)
 }
 
