@@ -1,6 +1,7 @@
 const { sendIntroMessage,
   sendAdditionalInfoMessage,
-  sendTextMessage
+  sendTextMessage,
+  sendResourceOfTheDayMessage
       } = require('./answers')
 
 const receivedMessage = (event) => {
