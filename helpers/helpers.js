@@ -7,6 +7,7 @@ const { sendIntroMessage,
 const callSendAPI = require('./apiHelper')
 const eventService = require('../services/event.service')
 const optionService = require('../services/option.service')
+const nlpService = require('../services/nlp.service')
 const handleQuickReplyResponse = require('./responseHelpers')
 
 const receivedMessage = (event) => {
