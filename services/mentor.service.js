@@ -21,6 +21,7 @@ function getMentorForms(recipientId) {
           elements: [
             {
               title: "Mentor Form",
+              subtitle: "Sign up to mentor!",
               default_action: {
                 type: "web_url",
                 url: "https://docs.google.com/forms/d/e/1FAIpQLScRIAaY8IxAm1ToMlLygPzOiERRDRFJRB0qs3QTdrFW4Ql_cw/viewform?usp=sf_link",
@@ -30,6 +31,7 @@ function getMentorForms(recipientId) {
             },
             {
               title: "How to be a great mentor",
+              subtitle: "A great resource on how to be a mentor",
               default_action: {
                 type: "web_url",
                 url: "https://blog.hubspot.com/marketing/mentor-tips-positive-impact",
@@ -57,6 +59,7 @@ function getMenteeForms(recipientId) {
           elements: [
             {
               title: "Mentee Form",
+              subtitle: "Sign up to get mentorship!",
               default_action: {
                 type: "web_url",
                 url: "https://docs.google.com/forms/d/e/1FAIpQLSc7_N7jDmO5a3P8NtE8U9cayv0vc8Zs9qaVIudF_F4gFNeG2A/viewform?usp=sf_link",
@@ -66,6 +69,7 @@ function getMenteeForms(recipientId) {
             },
             {
               title: "How to be a great mentee",
+              subtitle: "Getting ready for your mentorship experience",
               default_action: {
                 type: "web_url",
                 url: "http://superheroyou.com/good-mentee/",
