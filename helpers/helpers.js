@@ -6,6 +6,7 @@ const { sendIntroMessage,
 
 const callSendAPI = require('./apiHelper')
 const eventService = require('../services/event.service')
+const jobsService = require('../services/jobs.service')
 const optionService = require('../services/option.service')
 const greetingService = require('../services/greeting.service')
 const nlpService = require('../services/nlp.service')
@@ -23,6 +24,7 @@ function handlePostback(event) {
       messageData = eventService.getFilterOptions(senderId);
       break;
     case 'jobs':
+      messageData = jobsService.getFilterOptions(senderId);
       break;
     case 'mentorship':
       break;
