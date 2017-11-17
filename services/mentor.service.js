@@ -17,9 +17,14 @@ function getMentorForms(recipientId) {
       attachment: {
         type: "template",
         payload: {
-          template_type: "button",
-          url: "https://docs.google.com/forms/d/e/1FAIpQLScRIAaY8IxAm1ToMlLygPzOiERRDRFJRB0qs3QTdrFW4Ql_cw/viewform?usp=sf_link",
-          text: "Mentor Form"
+          template_type: "list",
+          elements: [
+            {
+              url: "https://docs.google.com/forms/d/e/1FAIpQLScRIAaY8IxAm1ToMlLygPzOiERRDRFJRB0qs3QTdrFW4Ql_cw/viewform?usp=sf_link",
+              messenger_extensions: true,
+              webview_height_ratio: "tall"
+            }
+          ]
         }
       }
     }
@@ -35,9 +40,14 @@ function getMenteeForms(recipientId) {
       attachment: {
         type: "template",
         payload: {
-          template_type: "button",
-          url: "https://docs.google.com/forms/d/e/1FAIpQLSc7_N7jDmO5a3P8NtE8U9cayv0vc8Zs9qaVIudF_F4gFNeG2A/viewform?usp=sf_link",
-          text: "Mentee Form"
+          template_type: "list",
+          elements: [
+            {
+              url: "https://docs.google.com/forms/d/e/1FAIpQLSc7_N7jDmO5a3P8NtE8U9cayv0vc8Zs9qaVIudF_F4gFNeG2A/viewform?usp=sf_link",
+              messenger_extensions: true,
+              webview_height_ratio: "tall"
+            }
+          ]
         }
       }
     }
