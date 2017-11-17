@@ -21,15 +21,21 @@ function getMentorForms(recipientId) {
           elements: [
             {
               title: "Mentor Form",
-              url: "https://docs.google.com/forms/d/e/1FAIpQLScRIAaY8IxAm1ToMlLygPzOiERRDRFJRB0qs3QTdrFW4Ql_cw/viewform?usp=sf_link",
-              messenger_extensions: true,
-              webview_height_ratio: "tall"
+              default_action: {
+                type: "web_url",
+                url: "https://docs.google.com/forms/d/e/1FAIpQLScRIAaY8IxAm1ToMlLygPzOiERRDRFJRB0qs3QTdrFW4Ql_cw/viewform?usp=sf_link",
+                messenger_extensions: true,
+                webview_height_ratio: "tall"
+              }
             },
             {
               title: "How to be a great mentor",
-              url: "https://blog.hubspot.com/marketing/mentor-tips-positive-impact",
-              messenger_extensions: true,
-              webview_height_ratio: "tall"
+              default_action: {
+                type: "web_url",
+                url: "https://blog.hubspot.com/marketing/mentor-tips-positive-impact",
+                messenger_extensions: true,
+                webview_height_ratio: "tall"
+              }
             }
           ]
         }
@@ -50,14 +56,22 @@ function getMenteeForms(recipientId) {
           template_type: "list",
           elements: [
             {
-              url: "https://docs.google.com/forms/d/e/1FAIpQLSc7_N7jDmO5a3P8NtE8U9cayv0vc8Zs9qaVIudF_F4gFNeG2A/viewform?usp=sf_link",
-              messenger_extensions: true,
-              webview_height_ratio: "tall"
+              title: "Mentee Form",
+              default_action: {
+                type: "web_url",
+                url: "https://docs.google.com/forms/d/e/1FAIpQLSc7_N7jDmO5a3P8NtE8U9cayv0vc8Zs9qaVIudF_F4gFNeG2A/viewform?usp=sf_link",
+                messenger_extensions: true,
+                webview_height_ratio: "tall"
+              }
             },
             {
-              url: "http://superheroyou.com/good-mentee/",
-              messenger_extensions: true,
-              webview_height_ratio: "tall"
+              title: "How to be a great mentee",
+              default_action: {
+                type: "web_url",
+                url: "http://superheroyou.com/good-mentee/",
+                messenger_extensions: true,
+                webview_height_ratio: "tall"
+              }
             }
           ]
         }
