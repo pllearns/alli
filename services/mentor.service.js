@@ -62,6 +62,7 @@ function getMenteeForms(recipientId) {
             {
               title: "Mentee Form",
               subtitle: "Sign up to get mentorship!",
+              image_url: "https://img.huffingtonpost.com/asset/594857ec15000026004e722e.jpg?ops=scalefit_820_noupscale",
               default_action: {
                 type: "web_url",
                 url: "https://docs.google.com/forms/d/e/1FAIpQLSc7_N7jDmO5a3P8NtE8U9cayv0vc8Zs9qaVIudF_F4gFNeG2A/viewform?usp=sf_link",
@@ -72,6 +73,7 @@ function getMenteeForms(recipientId) {
             {
               title: "How to be a great mentee",
               subtitle: "Getting ready for your mentorship experience",
+              image_url: "https://cdn.saultonline.com/wp-content/uploads/2017/09/rosie-tech.jpg",
               default_action: {
                 type: "web_url",
                 url: "http://superheroyou.com/good-mentee/",
