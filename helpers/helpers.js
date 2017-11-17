@@ -9,6 +9,7 @@ const eventService = require('../services/event.service')
 const jobsService = require('../services/jobs.service')
 const optionService = require('../services/option.service')
 const greetingService = require('../services/greeting.service')
+const mentorService = require('../services/mentor.service')
 const nlpService = require('../services/nlp.service')
 const handleQuickReplyResponse = require('./responseHelpers')
 
@@ -27,7 +28,17 @@ function handlePostback(event) {
       messageData = jobsService.getFilterOptions(senderId);
       break;
     case 'mentorship':
+      messageData = mentorService.getFilterOptions(senderId);
       break;
+
+    case 'Be a Mentor':
+      messageData = mentorService.getMentorForms(senderId)
+      break;
+
+    case 'Be a Mentee':
+      messageData = mentorService.getMenteeForms(senderId)
+      break; 
+
     default:
       console.log('nada yo');
   }
