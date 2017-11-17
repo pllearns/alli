@@ -31,12 +31,12 @@ function handlePostback(event) {
       messageData = mentorService.getFilterOptions(senderId);
       break;
 
-    case 'Be a Mentor':
-      messageData = mentorService.getMentorForms(senderId)
+    case 'mentor':
+      messageData = mentorService.getMentorForms(senderId);
       break;
 
-    case 'Be a Mentee':
-      messageData = mentorService.getMenteeForms(senderId)
+    case 'mentee':
+      messageData = mentorService.getMenteeForms(senderId);
       break; 
 
     default:
