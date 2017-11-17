@@ -11,50 +11,26 @@ const greetingService = require('../services/greeting.service')
 const nlpService = require('../services/nlp.service')
 const handleQuickReplyResponse = require('./responseHelpers')
 
-const receivedMessage = (event) => {
-  let senderID = event.sender.id
-  let recipientID = event.recipient.id
-  let timeOfMessage = event.timestamp
-  let message = event.message
-  let messageData = null
-  console.log('Received message for user %d and page %d at %d with message: ',
-    senderID, recipientID, timeOfMessage)
-  console.log(JSON.stringify(message))
+function handlePostback(event) {
+  const
+    senderId = event.sender.id,
+    payload = event.postback.payload;
 
-  let messageID = message.mid
-  let messageText = message.text
-  let messageAttachments = message.attachments
+  let messageData = null;
 
-  if (messageText) {
-    switch (messageText) {
-      case 'What is Alli?':
-        sendIntroMessage(senderID)
-        break
-
-      case 'Where can I get more info?':
-        sendAdditionalInfoMessage(senderID)
-        break
-
-      case 'I need help':
-        sendResourceOfTheDayMessage(senderID)
-        break
-
-      case 'events': 
-        messageData = eventService.getFilterOptions(senderID)
-        break
-      
-      case 'jobs': 
-        break
-
-      case 'mentorship': 
-        break
-
-      default:
-        sendTextMessage(senderID, messageText)
-    }
-  } else if (messageAttachments) {
-    sendTextMessage(senderID, "Message with attachment received")
+  switch (payload.toLowerCase()) {
+    case 'events':
+      messageData = eventService.getFilterOptions(senderId);
+      break;
+    case 'jobs':
+      break;
+    case 'mentorship':
+      break;
+    default:
+      console.log('nada yo');
   }
+
+  callSendAPI(messageData);
 }
 
 function processMessageFromPage(event) {
@@ -86,6 +62,6 @@ function processMessageFromPage(event) {
 }
 
 module.exports = {
-  receivedMessage, 
+  handlePostback, 
   processMessageFromPage
 }

@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 const {
-  receivedMessage, 
+  handlePostback, 
   processMessageFromPage } = require('./helpers/helpers')
 
 const port = process.env.PORT || 3000
@@ -49,7 +49,7 @@ app.post('/webhook', (req, res) => {
         if (event.message) {
           processMessageFromPage(event)
         } else if (event.postback) {
-          receivedMessage(event)
+          handlePostback(event)
         } else {
           console.log('Webhook received unknown event', event)
         }
