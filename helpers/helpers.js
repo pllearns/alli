@@ -83,4 +83,7 @@ function processMessageFromPage(event) {
   }
 }
 
-module.exports = receivedMessage, processMessageFromPage
+module.exports = {
+  receivedMessage, 
+  processMessageFromPage
+}

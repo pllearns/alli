@@ -3,7 +3,7 @@ const app = express()
 const bodyParser = require('body-parser')
 const {
   receivedMessage, 
-  processMessageFromPage} = require('./helpers/helpers')
+  processMessageFromPage } = require('./helpers/helpers')
 
 const port = process.env.PORT || 3000
 
