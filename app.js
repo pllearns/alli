@@ -1,7 +1,9 @@
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
-const receivedMessage = require('./helpers/helpers')
+const {
+  receivedMessage, 
+  processMessageFromPage} = require('./helpers/helpers')
 
 const port = process.env.PORT || 3000
 
@@ -42,7 +44,11 @@ app.post('/webhook', (req, res) => {
       let timeOfEvent = entry.time
 
       entry.messaging.forEach((event) => {
+        const propertyNames = Object.keys(event)
+        console.log("[app.post] Webhook event props: ", propertyNames.join())
         if (event.message) {
+          processMessageFromPage(event)
+        } else if (event.postback) {
           receivedMessage(event)
         } else {
           console.log('Webhook received unknown event', event)

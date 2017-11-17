@@ -74,20 +74,7 @@ const sendTextMessage = (recipientId, messageText) => {
       text: messageText
     }
   }
-  
-  function firstEntity(nlp, name) {
-    return nlp && nlp.entities && nlp.entities && nlp.entities[name] && nlp.entities[name][0];
-  }
-
-  function handleMessage(message) {
-    const greeting = firstEntity(message.nlp, 'greeting');
-    if (greeting && greeting.confidence > 0.8) {
-      sendResponse('Hi There!')
-    } else {
-      callSendAPI(message)
-    }
-  }
-  handleMessage(messageData)
+  callSendAPI(messageData)
 }
 
 module.exports = {
