@@ -22,6 +22,7 @@ function getMentorForms(recipientId) {
             {
               title: "Mentor Form",
               subtitle: "Sign up to mentor!",
+              image_url: "https://cdn.saultonline.com/wp-content/uploads/2017/09/rosie-tech.jpg",
               default_action: {
                 type: "web_url",
                 url: "https://docs.google.com/forms/d/e/1FAIpQLScRIAaY8IxAm1ToMlLygPzOiERRDRFJRB0qs3QTdrFW4Ql_cw/viewform?usp=sf_link",
@@ -32,6 +33,7 @@ function getMentorForms(recipientId) {
             {
               title: "How to be a great mentor",
               subtitle: "A great resource on how to be a mentor",
+              image_url: "https://img.huffingtonpost.com/asset/594857ec15000026004e722e.jpg?ops=scalefit_820_noupscale",
               default_action: {
                 type: "web_url",
                 url: "https://blog.hubspot.com/marketing/mentor-tips-positive-impact",
