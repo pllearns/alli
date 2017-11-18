@@ -15,7 +15,7 @@ function getDefaultOptions(recipientId) {
         type: "template",
         payload: {
           template_type: "button",
-          text: `I'm Alli. What can I help with?`,
+          text: `I'm Alli 🙋🏾‍  and I'm your tech world ally! What can I help you with today?`,
           buttons: [
             {
               "type": "postback",

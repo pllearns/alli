@@ -11,6 +11,8 @@ const
   optionService = require('./services/option.service'),
   mentorService = require('./services/mentor.service'),
   meetupService = require('./services/meetup.service'),
+  messageService = require('./services/message.service'),
+  jobService = require('./services/jobs.service'),
   request = require('request');
 
 const app = express();
@@ -95,7 +97,7 @@ app.post('/webhook', function (req, res) {
 function handlePostback(event) {
   const
     senderId = event.sender.id,
-    payload = event.postback.payload;
+    payload = event.postback ? event.postback.payload : event.message.quick_reply.payload;
 
   let messageData = null;
 
@@ -105,11 +107,11 @@ function handlePostback(event) {
       break;
 
     case 'women_events': 
-      getEventsMessage(senderId, 'women');
+      meetupService.getEventsMessage(senderId, 'women');
       break;
 
     case 'lgbtq_events':
-      getEventsMessage(senderId, 'lgbt');
+      meetupService.getEventsMessage(senderId, 'lgbt');
       break;
 
     case 'mentorship':
@@ -123,9 +125,17 @@ function handlePostback(event) {
     case 'mentee':
       messageData = mentorService.getMenteeForms(senderId);
       break;
+    
+    case 'jobs': 
+      messageData = jobService.getFilterOptions(senderId);
+      break;
 
     case 'frontend_jobs':
-      messageData = jobsService.getJobOpps(senderId);
+      jobService.getJobsMessage(senderId, 'frontend', 'Oakland');
+      break;
+
+    case 'backend_jobs':
+      jobService.getJobsMessage(senderId, 'backend', 'Oakland');
       break;
   }
     if (messageData) {
@@ -133,10 +143,9 @@ function handlePostback(event) {
     }
 }
 
-function getEventsMessage(recipientId, category) {
-  // request(`https://api.meetup.com/find/upcoming_events?key=5933c78526527285251d2f0115047&topic_categories?name=${category}&text=tech&sign=true`, (error, response, body) => {
-  request(`https://api.meetup.com/find/upcoming_events?key=5933c78526527285251d2f0115047&topic_category=292&text=${category}&sign=true`, (error, response, body) => {
-    
+function getJobsMessage(recipientId, category) {
+  request(`https://jobs.github.com/positions.json?lat=${lat}&${long}`, (error, response, body) => {
+
     const payloadElements = meetupService.getPayloadElements(JSON.parse(body));
     const messageData = {
       recipient: {
@@ -152,6 +161,7 @@ function getEventsMessage(recipientId, category) {
         }
       }
     };
+    messageService.sendTextMessage(recipientId, 'Below are job opportunities you might be interested in!')
     callSendAPI(messageData);
   })
 }
@@ -174,7 +184,7 @@ function processMessageFromPage(event) {
     if (greeting && greeting.confidence > 0.8) {
       // todo: typing_on delay preceding responses
       const greeting = greetingService.timeSensitive();
-      sendTextMessage(senderID, greeting);
+      messageService.sendTextMessage(senderID, greeting);
       const messageData = optionService.getDefaultOptions(senderID);
       callSendAPI(messageData);
     } else {
@@ -197,7 +207,7 @@ function handleQuickReplyResponse(event) {
   console.log("[handleQuickReplyResponse] Handling quick reply response (%s) from sender (%d) to page (%d) with message (%s)",
     payload, senderID, pageID, JSON.stringify(message));
 
-  respondToHelpRequest(senderID, payload);
+  handlePostback(event);
 
 }
 
@@ -585,20 +595,6 @@ function getImageAttachments(recipientId, helpRequestType) {
   }
 
   return messageData;
-}
-
-
-function sendTextMessage(recipientId, messageText) {
-  const messageData = {
-    recipient: {
-      id: recipientId
-    },
-    message: {
-      text: messageText // utf-8, 640-character max
-    }
-  };
-
-  callSendAPI(messageData);
 }
 
 function callSendAPI(messageData) {

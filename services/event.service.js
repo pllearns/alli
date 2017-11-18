@@ -25,32 +25,31 @@ function getEventFilterOptions(recipientId) {
       id: recipientId
     },
     message: {
-      attachment: {
-        type: "template",
-        payload: {
-          template_type: "button",
-          text: `Great! What type of events are you interested in?`,
-          buttons: [
-            {
-              "type": "postback",
-              "title": "Women in Tech",
-              "payload": "WOMEN_EVENTS"
-            },
-            {
-              "type": "postback",
-              "title": "LGBTQ",
-              "payload": "LGBTQ_EVENTS"
-            },
-            {
-              "type": "postback",
-              "title": "Other",
-              "payload": "OTHER_EVENTS"
-            }
-          ]
+      text: `Way to get out there! Let's meet some new people. What type of events are you interested in?`,
+      quick_replies: [
+        {
+          content_type: "text",
+          title: "Women in Tech",
+          payload: "WOMEN_EVENTS"
+        },
+        {
+          content_type: "text",
+          title: "LGBTQ",
+          payload: "LGBTQ_EVENTS"
+        },
+        {
+          content_type: "text",
+          title: "Black in Tech",
+          payload: "BLACK_EVENTS"
+        },
+        {
+          content_type: "text",
+          title: "Latinx in Tech",
+          payload: "LATINX_EVENTS"
         }
+          ]
       }
     }
-  };
-}
+  }
 
 module.exports = eventService;

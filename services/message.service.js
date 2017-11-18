@@ -1,12 +1,21 @@
 'use strict';
+const callSendAPI = require('../helpers/apiHelper')
 
-const meetupService = {
-  getEvents: getEvents
+const messageService = {
+  sendTextMessage: sendTextMessage
 };
 
-function getEvents(category, lat, lon) {
-      // todo :: get to meetup using lon/lat
-    // https://api.meetup.com/find/events?topic_category=${category}&lat=${lat}&lon=${lon}&sign=true
+function sendTextMessage(recipientId, messageText) {
+  const messageData = {
+    recipient: {
+      id: recipientId
+    },
+    message: {
+      text: messageText // utf-8, 640-character max
+    }
+  };
+
+  callSendAPI(messageData);
 }
 
-module.exports = meetupService;
+module.exports = messageService;

@@ -9,7 +9,7 @@ function getTimeSensitiveGreeting() {
       currentHour = new Date().getHours(),
       greetingMap = {
         morning: ['Good Morning!'],
-        afternoon: ['Good afternoon!', 'Hey, hope your day is going well so far! 🤗'],
+        afternoon: ['Good afternoon!', 'Hey, hope your day is going well so far!'],
         evening: ['Good evening!', 'Hey, hope your day went well!']
       };
 
