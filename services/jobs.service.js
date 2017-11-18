@@ -3,11 +3,28 @@
 const meetupService = require('./meetup.service')
 
 const jobsService = {
-  getFilterOptions: getEventFilterOptions
+  getFilterOptions: getEventFilterOptions,
+  getJobOpps
 };
 
-function getJobOpps() {
+function getJobOpps(recipientId) {
+  var myHeaders = new Headers();
 
+  let lat = event.message.attachments[0].payload.coordinates.lat
+  let long = event.message.attachments[0].payload.coordinates.long
+
+  var myInit = {
+    method: 'GET',
+    headers: myHeaders,
+    credentials: 'cors',
+    cache: 'default'
+  }
+
+  fetch(`https://jobs.github.com/positions.json?lat=${lat}&${long}`, myInit).then(function(response) {
+    return response.json()
+  }).then(function(myBlob) {
+    console.log(myBlob)
+  })
 }
 
 function getEventFilterOptions(recipientId) {
@@ -44,4 +61,4 @@ function getEventFilterOptions(recipientId) {
   };
 }
 
-module.exports = jobsService;
+module.exports = jobsService

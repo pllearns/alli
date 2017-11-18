@@ -1,9 +1,3 @@
-const { sendIntroMessage,
-  sendAdditionalInfoMessage,
-  sendTextMessage,
-  sendResourceOfTheDayMessage
-      } = require('./answers')
-
 const callSendAPI = require('./apiHelper')
 const eventService = require('../services/event.service')
 const jobsService = require('../services/jobs.service')
@@ -38,6 +32,10 @@ function handlePostback(event) {
     case 'mentee':
       messageData = mentorService.getMenteeForms(senderId);
       break; 
+    
+    case 'frontend_jobs':
+      messageData = jobsService.getJobOpps(senderId);
+      break;
 
     default:
       console.log('nada yo');
