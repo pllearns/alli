@@ -72,6 +72,27 @@ function processMessageFromPage(event) {
   }
 }
 
+function getJobOpps(recipientId, event) {
+
+  let lat = event.message.attachments[0].payload.coordinates.lat
+  let long = event.message.attachments[0].payload.coordinates.long
+
+  var myHeaders = new Headers();
+
+  var myInit = {
+    method: 'GET',
+    headers: myHeaders,
+    credentials: 'cors',
+    cache: 'default'
+  }
+
+  fetch(`https://jobs.github.com/positions.json?lat=${lat}&${long}`, myInit).then(function (response) {
+    return response.json()
+  }).then(function (myBlob) {
+    console.log(myBlob)
+  })
+}
+
 module.exports = {
   handlePostback, 
   processMessageFromPage
