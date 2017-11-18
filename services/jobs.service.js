@@ -7,8 +7,9 @@ const jobsService = {
   getJobOpps
 };
 
+var myHeaders = new Headers();
+
 function getJobOpps(recipientId) {
-  var myHeaders = new Headers();
 
   let lat = event.message.attachments[0].payload.coordinates.lat
   let long = event.message.attachments[0].payload.coordinates.long
