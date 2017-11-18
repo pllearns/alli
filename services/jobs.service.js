@@ -3,31 +3,8 @@
 const meetupService = require('./meetup.service')
 
 const jobsService = {
-  getFilterOptions: getEventFilterOptions,
-  getJobOpps
+  getFilterOptions: getEventFilterOptions
 };
-
-
-function getJobOpps(recipientId, event) {
-  
-  let lat = event.message.attachments[0].payload.coordinates.lat
-  let long = event.message.attachments[0].payload.coordinates.long
-  
-  var myHeaders = new Headers();
-
-  var myInit = {
-    method: 'GET',
-    headers: myHeaders,
-    credentials: 'cors',
-    cache: 'default'
-  }
-
-  fetch(`https://jobs.github.com/positions.json?lat=${lat}&${long}`, myInit).then(function(response) {
-    return response.json()
-  }).then(function(myBlob) {
-    console.log(myBlob)
-  })
-}
 
 function getEventFilterOptions(recipientId) {
   return {
@@ -53,8 +30,8 @@ function getEventFilterOptions(recipientId) {
             },
             {
               "type": "postback",
-              "title": "Artificial Intelligence",
-              "payload": "AI_JOBS"
+              "title": "Fullstack Development",
+              "payload": "FULLSTACK"
             }
           ]
         }
