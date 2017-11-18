@@ -8,13 +8,13 @@ const jobsService = {
 };
 
 
-function getJobOpps(recipientId) {
+function getJobOpps(recipientId, event) {
   
   let lat = event.message.attachments[0].payload.coordinates.lat
   let long = event.message.attachments[0].payload.coordinates.long
   
   var myHeaders = new Headers();
-  
+
   var myInit = {
     method: 'GET',
     headers: myHeaders,
