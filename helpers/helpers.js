@@ -72,7 +72,9 @@ function processMessageFromPage(event) {
   }
 }
 
-function getJobOpps(recipientId, event) {
+function getJobOpps(event) {
+
+  console.log('Do I get an event here? ', event)
 
   let lat = event.message.attachments[0].payload.coordinates.lat
   let long = event.message.attachments[0].payload.coordinates.long
