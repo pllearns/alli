@@ -29,7 +29,30 @@ function getJobsMessage(recipientId, category, locationName) {
         }
       }
     };
-    messageService.sendTextMessage(recipientId, 'Below are job opportunities you might be interested in!')
+
+    let message = '';
+
+    switch (category) {
+      case 'javascript':
+        message = 'You love JavaScript? These jobs should peak your interest!';
+        break;
+      case 'java':
+        message = 'Java is awesome, and so are you! Time to find that next Java position!';
+        break;
+      case 'ruby':
+        message: 'Riding the rails on Ruby, oh yeah! Here are some opportunities for Ruby Developers!';
+        break;
+      case 'python':
+        message: 'The language of AI is just too cool, now on to a cool job in Python!';
+        break;
+      case 'go':
+        message: 'golang all day! Jobs in this language are right below!';
+        break;
+      case 'php':
+        message: 'Yep, php is the place to be, do some work!';
+        break;
+    }
+    messageService.sendTextMessage(recipientId, message)
     callSendAPI(messageData);
   })
 }

@@ -38,8 +38,12 @@ function getEventsMessage(recipientId, category) {
       case 'lgbt':
         message = 'Awesome! LGBTQ events are really taking off! Here\'s what\'s on the calendar..';
         break;
-      case 'black':
+      case 'black': 
+        message: 'Ready to meet new people from the black community in tech? Check out these events..';
+        break;
       case 'latinx':
+        message: 'Latinx in tech events are on the rise, here is what we can look forward to..';
+        break;
     }
 
     messageService.sendTextMessage(recipientId, message)

@@ -130,12 +130,28 @@ function handlePostback(event) {
       messageData = jobService.getFilterOptions(senderId);
       break;
 
-    case 'frontend_jobs':
-      jobService.getJobsMessage(senderId, 'frontend', 'Oakland');
+    case 'js':
+      jobService.getJobsMessage(senderId, 'javascript', 'SF');
       break;
 
-    case 'backend_jobs':
-      jobService.getJobsMessage(senderId, 'backend', 'Oakland');
+    case 'java':
+      jobService.getJobsMessage(senderId, 'java', 'SF');
+      break;
+
+    case 'ruby':
+      jobService.getJobsMessage(senderId, 'ruby', 'SF');
+      break;
+
+    case 'python':
+      jobService.getJobsMessage(senderId, 'python', 'SF');
+      break;
+
+    case 'go':
+      jobService.getJobsMessage(senderId, 'go', 'SF');
+      break;
+
+    case 'php':
+      jobService.getJobsMessage(senderId, 'php', 'SF');
       break;
   }
     if (messageData) {
