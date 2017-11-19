@@ -114,6 +114,14 @@ function handlePostback(event) {
       meetupService.getEventsMessage(senderId, 'lgbt');
       break;
 
+    case 'black_events':
+      meetupService.getEventsMessage(senderId, 'black');
+      break;
+
+    case 'latinx_events':
+      meetupService.getEventsMessage(senderId, 'latino');
+      break;
+
     case 'mentorship':
       messageData = mentorService.getFilterOptions(senderId);
       break;
