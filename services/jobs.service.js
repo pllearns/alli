@@ -72,7 +72,12 @@ function getPayloadElements(jobs) {
         type: 'web_url',
         url: jobs[i].url,
         webview_height_ratio: 'COMPACT',
-      }
+      },
+      buttons: [
+        {
+          type: "element_share"
+        }
+      ]
     })
   }
 

@@ -63,7 +63,12 @@ function getPayloadElements(body) {
       default_action: {
         type: 'web_url',
         url: events[i].link
-      }
+      },
+      buttons: [
+        {
+          type: "element_share"
+        }
+      ]
     })
   }
 
