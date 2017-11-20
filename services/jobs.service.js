@@ -40,16 +40,16 @@ function getJobsMessage(recipientId, category, locationName) {
         message = 'Java is awesome, and so are you! Time to find that next Java position!';
         break;
       case 'ruby':
-        message: 'Riding the rails on Ruby, oh yeah! Here are some opportunities for Ruby Developers!';
+        message = 'Riding the rails on Ruby, oh yeah! Here are some opportunities for Ruby Developers!';
         break;
       case 'python':
-        message: 'The language of AI is just too cool, now on to a cool job in Python!';
+        message = 'The language of AI is just too cool, now on to a cool job in Python!';
         break;
       case 'go':
-        message: 'golang all day! Jobs in this language are right below!';
+        message = 'golang all day! Jobs in this language are right below!';
         break;
       case 'php':
-        message: 'Yep, php is the place to be, do some work!';
+        message = 'Yep, php is the place to be, do some work!';
         break;
     }
     messageService.sendTextMessage(recipientId, message)
@@ -71,6 +71,7 @@ function getPayloadElements(jobs) {
       default_action: {
         type: 'web_url',
         url: jobs[i].url,
+        messenger_extensions: false,
         webview_height_ratio: 'COMPACT',
       },
       buttons: [

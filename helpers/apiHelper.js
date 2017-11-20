@@ -7,8 +7,12 @@ function callSendAPI(messageData) {
     uri: 'https://graph.facebook.com/v2.6/me/messages',
     qs: { access_token: PAGE_ACCESS_TOKEN },
     method: 'POST',
-    json: messageData
-
+    json: messageData,
+    whitelisted_domains: [
+      "https://docs.google.com",
+      "https://www.meetup.com",
+      "https://jobs.github.com"
+    ]
   }, (error, response, body) => {
     if (!error && response.statusCode === 200) {
       const
