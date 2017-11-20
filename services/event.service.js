@@ -1,9 +1,10 @@
 'use strict';
-const config = require('../config')
-const callSendAPI = require('../helpers/apiHelper')
-const request = require('request')
 
-const meetupService = require('./meetup.service')
+const config = require('../config');
+const callSendAPI = require('../helpers/apiHelper');
+const request = require('request');
+
+const meetupService = require('./meetup.service');
 
 const eventService = {
   getFilterOptions: getEventFilterOptions,

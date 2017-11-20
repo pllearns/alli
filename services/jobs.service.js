@@ -1,15 +1,15 @@
 'use strict';
 
-const request = require('request')
-const config = require('../config')
-const messageService = require('./message.service')
-const callSendAPI = require('../helpers/apiHelper')
+const request = require('request');
+const config = require('../config');
+const messageService = require('./message.service');
+const callSendAPI = require('../helpers/apiHelper');
 
 const jobService = {
   getJobsMessage: getJobsMessage,
   getPayloadElements: getPayloadElements,
   getFilterOptions: getEventFilterOptions
-}
+};
 
 function getJobsMessage(recipientId, category, locationName) {
   request(`https://jobs.github.com/positions.json?description=${category}&location=${locationName}`, (error, response, body) => {
@@ -82,7 +82,7 @@ function getPayloadElements(jobs) {
     })
   }
 
-  return payloadElements
+  return payloadElements;
 }
 
 

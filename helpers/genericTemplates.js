@@ -1,12 +1,11 @@
+'use strict';
+
 function getGenericTemplates(recipientId, requestForHelpOnFeature) {
   console.log("[getGenericTemplates] handling help request for %s",
     requestForHelpOnFeature);
   var templateElements = [];
   var sectionButtons = [];
 
-  // each button must be of type postback but title
-  // and payload are variable depending on which
-  // set of options you want to provide
   var addSectionButton = function (title, payload) {
     sectionButtons.push({
       type: 'postback',
@@ -14,10 +13,6 @@ function getGenericTemplates(recipientId, requestForHelpOnFeature) {
       payload: payload
     });
   };
-
-  // Since there are only four options in total, we will provide
-  // buttons for each of the remaining three with each section.
-  // This provides the user with maximum flexibility to navigate
 
   switch (requestForHelpOnFeature) {
     case 'QR_ROTATION_1':

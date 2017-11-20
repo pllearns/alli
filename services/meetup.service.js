@@ -11,7 +11,7 @@ const meetupService = {
 }
 
 function getEventsMessage(recipientId, category) {
-  request(`https://api.meetup.com/find/upcoming_events?key=5933c78526527285251d2f0115047&topic_category=292&text=${category}&sign=true`, (error, response, body) => {
+  request(`https://api.meetup.com/find/upcoming_events?key=${config.meetupApiKey}&topic_category=292&text=${category}&sign=true`, (error, response, body) => {
 
     const payloadElements = meetupService.getPayloadElements(JSON.parse(body));
     const messageData = {

@@ -1,6 +1,6 @@
-const request = require('request')
+const request = require('request');
 
-const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN || config.pageAccessToken
+const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN || config.pageAccessToken;
 
 function callSendAPI(messageData) {
   request({
@@ -32,4 +32,4 @@ function callSendAPI(messageData) {
   });
 }
 
-module.exports = callSendAPI
+module.exports = callSendAPI;
