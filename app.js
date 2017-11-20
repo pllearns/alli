@@ -44,6 +44,10 @@ function verifyRequestSignature(req, res, buf) {
   }
 }
 
+app.get('/', function(req, res) {
+  res.send('Hey, I am a bot to help you get opportunities! Coming soon!!!')
+})
+
 app.get('/webhook', function (req, res) {
   if (req.query['hub.mode'] === 'subscribe' &&
     req.query['hub.verify_token'] === VALIDATION_TOKEN) {
