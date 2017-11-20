@@ -3,11 +3,11 @@
 ### Production app coming soon!!!
 
 ## Inspiration
-**bold**Opportunities for underserved communities in tech are still tough to come by. 
+**Opportunities for underserved communities in tech are still tough to come by.** 
 My partner in hacking, Alissa and I thought that the best way to connect communities to tech, would be to serve those communities with the greatest obstacles to get through the leaky pipeline into tech. We felt that using Facebook Messenger and its bot capabilities would enable us to take this inspiration and create conversations that could do the work. 
 
 ## What it does
-Conversations are always a great way to connect people with opportunity. Alli, an awesome ally bot is ready to help Facebook users from communities of color, women, and the LGBTQ community connect with events, jobs, and mentorships. Users can share events and jobs with Facebook friends, and there is a signup form for people to become mentors or to get mentorship. 
+**Conversations are always a great way to connect people with opportunity.** Alli, an awesome ally bot is ready to help Facebook users from communities of color, women, and the LGBTQ community connect with events, jobs, and mentorships. Users can share events and jobs with Facebook friends, and there is a signup form for people to become mentors or to get mentorship. 
 
 ## How we built it
 We used apis from the Facebook Messenger Platform, Meetup.com, Google Forms(for now) and Github jobs. We used nlp to create greetings based on the time of day and to introduce Alli-Bot to the user. We used Meetup for the upcoming events conversation and Github jobs for conversations about job opportunities. Finally as a temporary solution, we use Google Forms to sign up mentors and mentees. 
@@ -16,7 +16,7 @@ We used apis from the Facebook Messenger Platform, Meetup.com, Google Forms(for 
 The api integration was challenging, but the ultimate challenge that will continue to persist throughout the development of this product is making sure that Alli stays engaging and human through all of her conversations with the end user.
 
 ## Accomplishments that we're proud of
-Being able to create a robust starting point for a chatbot product, something we have never done before. Also, to be able to create a product that people have already responded to as having the potential for a positive impact, and we are starting to collect a list of trial users!
+Being able to create a robust starting point for a chatbot product, something we have never done before was awesome. Also, to be able to create a product that people have already responded to as having the potential for a positive impact, and we are starting to collect a list of trial users!
 
 ## What we learned
 We learned how to interact with new apis that we have never touched before. We learned how to create a chat bot, which is awesome. 
