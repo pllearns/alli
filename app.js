@@ -20,8 +20,6 @@ const APP_SECRET = config.appSecret;
 const VALIDATION_TOKEN = config.validationToken;
 const PAGE_ACCESS_TOKEN = config.pageAccessToken;
 
-const IMG_BASE_PATH = 'https://rodnolan.github.io/posterific-static-images/';
-
 if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKEN)) {
   console.error("Missing config values");
   process.exit(1);
@@ -77,7 +75,7 @@ app.post('/webhook', function (req, res) {
         } else {
           console.log("[app.post] not prepared to handle this message type.");
         }
-
+        
       });
     });
   }
