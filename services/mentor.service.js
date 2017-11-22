@@ -66,7 +66,7 @@ function getMenteeForms(recipientId) {
               default_action: {
                 type: "web_url",
                 url: "https://docs.google.com/forms/d/e/1FAIpQLSc7_N7jDmO5a3P8NtE8U9cayv0vc8Zs9qaVIudF_F4gFNeG2A/viewform?usp=sf_link",
-                messenger_extensions: true,
+                messenger_extensions: false,
                 webview_height_ratio: "tall"
               }
             },
@@ -77,7 +77,7 @@ function getMenteeForms(recipientId) {
               default_action: {
                 type: "web_url",
                 url: "http://superheroyou.com/good-mentee/",
-                messenger_extensions: true,
+                messenger_extensions: false,
                 webview_height_ratio: "tall"
               }
             }

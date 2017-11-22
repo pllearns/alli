@@ -43,7 +43,16 @@ function verifyRequestSignature(req, res, buf) {
 }
 
 app.get('/', function(req, res) {
-  res.send('Hey, I am a bot to help you get opportunities! Coming soon!!!')
+  res.send(`
+  Hey, I am a bot to help you get opportunities to connect with other developers! 
+  Just so you know, I don't collect any info to share with any marketers,
+  advertisers, or any of that stuff. 
+  For now I only share information with you based on your direction.
+  Information that is shared about mentoring and mentorships is only meant to connect
+  prospective mentors to mentees, and subject to final approval by both parties.
+  I will have an updated privacy policy as I continue to improve what I can offer you.
+  Thanks for reading.
+  `)
 })
 
 app.get('/webhook', function (req, res) {
