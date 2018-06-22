@@ -119,8 +119,10 @@ function processMessageFromPage(event) {
   message.quick_reply ? handleQuickReplyResponse(event) : messageText = message.text;
 
   if (messageText) {
-    const greeting = nlpService.intentDefined(message.nlp, 'greeting');
+    const greeting = nlpService.intentDefined(message.nlp, 'greetings');
+    const bye = nlpService.intentDefined(message.nlp, 'bye')
     console.log({ greeting });
+    console.log({ bye })
 
     if (greeting && greeting.confidence > 0.8) {
       // todo: typing_on delay preceding responses
@@ -128,6 +130,8 @@ function processMessageFromPage(event) {
       messageService.sendTextMessage(senderID, greeting);
       const messageData = optionService.getDefaultOptions(senderID);
       callSendAPI(messageData);
+    } else if (bye && bye.confidence > 0.8) {
+      sendResponse('bye!');
     } else {
       const messageData = optionService.getDefaultOptions(senderID);
       callSendAPI(messageData);
