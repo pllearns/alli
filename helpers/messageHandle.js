@@ -3,6 +3,7 @@ const callSendAPI = require('./apiHelper');
 
 const
   greetingService = require('../services/greeting.service'),
+  goodbyeService = require('../services/goodbye.service'),
   nlpService = require('../services/nlp.service'),
   eventService = require('../services/event.service'),
   optionService = require('../services/option.service'),
@@ -131,7 +132,8 @@ function processMessageFromPage(event) {
       const messageData = optionService.getDefaultOptions(senderID);
       callSendAPI(messageData);
     } else if (bye && bye.confidence > 0.8) {
-      sendResponse('bye!');
+      const bye = goodbyeService.timeSensitiveBye();
+      messageService.sendTextMessage(senderID, bye);
     } else {
       const messageData = optionService.getDefaultOptions(senderID);
       callSendAPI(messageData);
