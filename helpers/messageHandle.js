@@ -10,6 +10,7 @@ const
   mentorService = require('../services/mentor.service'),
   meetupService = require('../services/meetup.service'),
   messageService = require('../services/message.service'),
+  recruitingService = require('../services/recruiting.service'),
   jobService = require('../services/jobs.service');
 
 function handlePostback(event) {
@@ -134,6 +135,9 @@ function processMessageFromPage(event) {
     } else if (bye && bye.confidence > 0.8) {
       const bye = goodbyeService.timeSensitiveBye();
       messageService.sendTextMessage(senderID, bye);
+    } else if ('I need a job') {
+      const messageData = recruitingService.getRecruitingServices(senderID);
+      callSendAPI(messageData);
     } else {
       const messageData = optionService.getDefaultOptions(senderID);
       callSendAPI(messageData);
