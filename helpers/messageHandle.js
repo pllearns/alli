@@ -3,12 +3,14 @@ const callSendAPI = require('./apiHelper');
 
 const
   greetingService = require('../services/greeting.service'),
+  goodbyeService = require('../services/goodbye.service'),
   nlpService = require('../services/nlp.service'),
   eventService = require('../services/event.service'),
   optionService = require('../services/option.service'),
   mentorService = require('../services/mentor.service'),
   meetupService = require('../services/meetup.service'),
   messageService = require('../services/message.service'),
+  recruitingService = require('../services/recruiting.service'),
   jobService = require('../services/jobs.service');
 
 function handlePostback(event) {
@@ -119,14 +121,22 @@ function processMessageFromPage(event) {
   message.quick_reply ? handleQuickReplyResponse(event) : messageText = message.text;
 
   if (messageText) {
-    const greeting = nlpService.intentDefined(message.nlp, 'greeting');
+    const greeting = nlpService.intentDefined(message.nlp, 'greetings');
+    const bye = nlpService.intentDefined(message.nlp, 'bye')
     console.log({ greeting });
+    console.log({ bye })
 
     if (greeting && greeting.confidence > 0.8) {
       // todo: typing_on delay preceding responses
       const greeting = greetingService.timeSensitive();
       messageService.sendTextMessage(senderID, greeting);
       const messageData = optionService.getDefaultOptions(senderID);
+      callSendAPI(messageData);
+    } else if (bye && bye.confidence > 0.8) {
+      const bye = goodbyeService.timeSensitiveBye();
+      messageService.sendTextMessage(senderID, bye);
+    } else if ('I need a job') {
+      const messageData = recruitingService.getRecruitingServices(senderID);
       callSendAPI(messageData);
     } else {
       const messageData = optionService.getDefaultOptions(senderID);
