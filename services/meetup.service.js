@@ -1,79 +1,60 @@
 'use strict';
 
-const request = require('request')
-const config = require('../config')
-const messageService = require('./message.service')
-const callSendAPI = require('../helpers/apiHelper')
+const
+    request = require('request'),
+    config = require('../config'),
+    messageService = require('./message.service'),
+    callSendAPI = require('../helpers/apiHelper');
+
+const path = 'https://api.meetup.com/find';
+const apiKey = config.meetupApiKey;
 
 const meetupService = {
-  getEventsMessage: getEventsMessage,
-  getPayloadElements: getPayloadElements
+    getEvents: getEvents,
+};
+
+function getEvents(category, recipientId) {
+    const eventsPath = `${path}/upcoming_events?key=${apiKey}&topic_category=292&text=${category}&sign=true`;
+    request(eventsPath, (err, res, body) => {
+        const data = JSON.parse(body);
+
+        if (data.events.length) {
+            const payloadElements = _getPayloadElements(data.events);
+            const message = _getMessage(payloadElements, recipientId);
+            messageService.sendTextMessage(recipientId, `Here are some upcoming events in ${data.city.city}!`);
+            callSendAPI(message);
+        } else {
+            const message = `Oh no.. it doesn't appear there are any upcoming events of that type in ${data.city.city}!`;
+            messageService.sendTextMessage(recipientId, message);
+        }
+
+    });
 }
 
-function getEventsMessage(recipientId, category) {
-  request(`https://api.meetup.com/find/upcoming_events?key=${config.meetupApiKey}&topic_category=292&text=${category}&sign=true`, (error, response, body) => {
+const _getPayloadElements = (events) => {
+    return events.map(e => {
+        return ({
+            title: e.name,
+            subtitle: e.local_date || null,
+            default_action: { type: 'web_url',  url: e.link },
+        })
+    });
+};
 
-    const payloadElements = meetupService.getPayloadElements(JSON.parse(body));
-    const messageData = {
-      recipient: {
-        id: recipientId
-      },
-      message: {
-        attachment: {
-          type: "template",
-          payload: {
-            template_type: "generic",
-            elements: payloadElements,
-          }
+const _getMessage = (elements, recipientId) => {
+    return {
+        recipient: { id: recipientId },
+        message: {
+            attachment: {
+                type: "template",
+                payload: {
+                    template_type: "generic",
+                    elements: elements
+                }
+            }
         }
-      }
     };
-
-    let message = '';
-
-    switch(category) {
-      case 'women':
-        message = 'Great! I\'m starting to see more tech events for women everyday. Let\'s see what events are coming up..';
-        break;
-      case 'lgbt':
-        message = 'Awesome! LGBTQ events are really taking off! Here\'s what\'s on the calendar..';
-        break;
-      case 'black': 
-        message: 'Ready to meet new people from the black community in tech? Check out these events..';
-        break;
-      case 'latinx':
-        message: 'Latinx in tech events are on the rise, here is what we can look forward to..';
-        break;
-    }
-
-    messageService.sendTextMessage(recipientId, message)
-    callSendAPI(messageData);
-  })
-}
-
-function getPayloadElements(body) {
-  const events              = body.events,
-        payloadElements     = [],
-        max_carousel_units  = 10;
-  
-  for (let i = 0; i < max_carousel_units && i < events.length; i++) {
-    payloadElements.push({
-      title: events[i].name,
-      subtitle: events[i].local_date || Date.now(),
-      default_action: {
-        type: 'web_url',
-        url: events[i].link
-      },
-      buttons: [
-        {
-          type: "element_share"
-        }
-      ]
-    })
-  }
-
-  return payloadElements
-}
+};
 
 
 module.exports = meetupService;

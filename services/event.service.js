@@ -26,7 +26,7 @@ function getEventFilterOptions(recipientId) {
       id: recipientId
     },
     message: {
-      text: `Way to get out there! Let's meet some new people. What type of events are you interested in?`,
+      text: `What type of events are you interested in?`,
       quick_replies: [
         {
           content_type: "text",

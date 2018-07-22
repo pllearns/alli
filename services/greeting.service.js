@@ -1,7 +1,9 @@
 'use strict';
 
 const greetingService = {
-  timeSensitive: getTimeSensitiveGreeting,
+    timeSensitive: getTimeSensitiveGreeting,
+    addTimeGreeted: addTimeGreeted,
+    timesGreeted: 0
 };
 
 function getTimeSensitiveGreeting() {
@@ -24,6 +26,10 @@ function getTimeSensitiveGreeting() {
   }
 
   return greetingMap[timeOfDay][Math.floor(Math.random() * greetingMap[timeOfDay].length)];
+}
+
+function addTimeGreeted() {
+    this.timesGreeted++;
 }
 
 module.exports = greetingService;

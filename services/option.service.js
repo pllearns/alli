@@ -1,4 +1,5 @@
 'use strict';
+const greetingService = require('../services/greeting.service');
 
 const optionService = {
   getDefaultOptions: getDefaultOptions
@@ -15,7 +16,7 @@ function getDefaultOptions(recipientId) {
         type: "template",
         payload: {
           template_type: "button",
-          text: `I'm Alli 🙋🏾‍  and I'm your tech world ally! What can I help you with today?`,
+          text: 'What can I help with today?',
           buttons: [
             {
               "type": "postback",
