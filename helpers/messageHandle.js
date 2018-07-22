@@ -11,6 +11,8 @@ const
     messageService = require('../services/message.service'),
     recruitingService = require('../services/recruiting.service'),
     jobService = require('../services/jobs.service'),
+    threadService = require('../services/thread.service'),
+    userService = require('../services/user.service'),
     greetingService = require('../services/greeting.service');
 
 function handlePostback(event) {
@@ -23,6 +25,11 @@ function handlePostback(event) {
     if (payload.toLowerCase().endsWith('_events')) {
         const eventCategory = payload.toLowerCase().split('_')[0];
         meetupService.getEvents(eventCategory, senderId);
+    }
+
+    if (payload.toLowerCase().endsWith('_jobs')) {
+        const jobCategory = payload.toLowerCase().split('_')[0];
+        jobService.getJobsMessage(jobCategory, senderId);
     }
 
     switch (payload.toLowerCase()) {
@@ -45,29 +52,29 @@ function handlePostback(event) {
             messageData = jobService.getFilterOptions(senderId);
             break;
 
-        case 'js':
-            jobService.getJobsMessage(senderId, 'javascript', 'SF');
-            break;
-
-        case 'java':
-            jobService.getJobsMessage(senderId, 'java', 'SF');
-            break;
-
-        case 'ruby':
-            jobService.getJobsMessage(senderId, 'ruby', 'SF');
-            break;
-
-        case 'python':
-            jobService.getJobsMessage(senderId, 'python', 'SF');
-            break;
-
-        case 'go':
-            jobService.getJobsMessage(senderId, 'go', 'SF');
-            break;
-
-        case 'php':
-            jobService.getJobsMessage(senderId, 'php', 'SF');
-            break;
+        // case 'js':
+        //     jobService.getJobsMessage(senderId, 'javascript', 'SF');
+        //     break;
+        //
+        // case 'java':
+        //     jobService.getJobsMessage(senderId, 'java', 'SF');
+        //     break;
+        //
+        // case 'ruby':
+        //     jobService.getJobsMessage(senderId, 'ruby', 'SF');
+        //     break;
+        //
+        // case 'python':
+        //     jobService.getJobsMessage(senderId, 'python', 'SF');
+        //     break;
+        //
+        // case 'go':
+        //     jobService.getJobsMessage(senderId, 'go', 'SF');
+        //     break;
+        //
+        // case 'php':
+        //     jobService.getJobsMessage(senderId, 'php', 'SF');
+        //     break;
     }
     if (messageData) {
         callSendAPI(messageData);
@@ -79,8 +86,11 @@ function processMessageFromPage(event) {
         senderID = event.sender.id,
         pageID = event.recipient.id,
         timeOfMessage = event.timestamp,
-        message = event.message;
+        message = event.message,
+        currentThread = threadService.getCurrentThread(),
+        user = userService.getUser();
 
+    console.log('user => ', user);
     let messageText = null;
 
     message.quick_reply ? handleQuickReplyResponse(event) : messageText = message.text;
@@ -92,7 +102,11 @@ function processMessageFromPage(event) {
         const recruiter = nlpService.intentDefined(message.nlp, 'recruiting');
         const help = nlpService.intentDefined(message.nlp, 'help');
         const events = nlpService.intentDefined(message.nlp, 'events');
+        const languages = nlpService.intentDefined(message.nlp, 'languages');
+        const location = nlpService.intentDefined(message.nlp, 'location');
+        const preferences = nlpService.intentDefined(message.nlp, 'preferences');
 
+        // Greeting
         if (greeting && greeting.confidence > 0.7) {
             greetingService.addTimeGreeted();
             if (greetingService.timesGreeted === 1) {
@@ -104,23 +118,67 @@ function processMessageFromPage(event) {
                     randomIdx = Math.floor(Math.random() * Math.floor(hellos.length));
                 messageService.sendTextMessage(senderID, hellos[randomIdx]);
             }
-        } else if (bye && bye.confidence > 0.7) {
+        }
+
+        // Goodbye
+        else if (bye && bye.confidence > 0.7) {
             const bye = goodbyeService.timeSensitiveBye();
             messageService.sendTextMessage(senderID, bye);
-        } else if (job && job.confidence > 0.7) {
-            const messageData = jobService.getFilterOptions(senderID);
-            callSendAPI(messageData);
-        } else if (events && events.confidence > 0.7) {
+        }
+
+        // Job
+        else if (job && job.confidence > 0.7) {
+            threadService.setCurrentThread('jobs');
+            if (!user.location) {
+                messageService.sendTextMessage(senderID, 'Which city would you like to search for jobs in?');
+            } else {
+                messageService.sendTextMessage(senderID, "Let's find some jobs. What language do you primarily code in?");
+            }
+        }
+
+        // Preferences
+        else if (preferences && preferences.confidence > 0.7) {
+            if (currentThread === 'jobs') {
+                messageService.sendTextMessage(senderID, "Sure. What city would you like to search in instead?");
+            }
+        }
+
+        // Events
+        else if (events && events.confidence > 0.7) {
             const messageData = eventService.getFilterOptions(senderID);
             callSendAPI(messageData);
-        } else if (recruiter && recruiter.confidence > 0.7) {
+        }
+
+        // Recruiting
+        else if (recruiter && recruiter.confidence > 0.7) {
             messageService.sendTextMessage(senderID, "Here are some popular recruiting resources.");
             const messageData = recruitingService.getRecruitingServices(senderID);
             callSendAPI(messageData);
-        } else if (help && help.confidence > 0.7) {
+        }
+
+        // Help
+        else if (help && help.confidence > 0.7) {
             const messageData = optionService.getDefaultOptions(senderID);
             callSendAPI(messageData);
-        } else {
+        }
+
+        // Languages
+        else if (languages && languages.confidence > 0.7) {
+            if (currentThread === 'jobs') {
+                jobService.getJobsMessage(senderID, languages.value, user.location);
+            }
+        }
+
+        // Location
+        else if (location && location.confidence > 0.7) {
+            if (currentThread === 'jobs') {
+                userService.setLocation(location.value);
+                messageService.sendTextMessage(senderID, "Let's find some jobs. What language do you primarily code in?");
+            }
+        }
+
+        // IDK
+        else {
             messageService.sendTextMessage(senderID, "Sorry, I didn't understand.");
             const messageData = optionService.getDefaultOptions(senderID);
             callSendAPI(messageData);

@@ -12,8 +12,8 @@ const jobService = {
 };
 
 function getJobsMessage(recipientId, category, locationName) {
+  console.log('category => ', category, locationName);
   request(`https://jobs.github.com/positions.json?description=${category}&location=${locationName}`, (error, response, body) => {
-    console.log('what the heck do I get???', body)
     const payloadElements = jobService.getPayloadElements(JSON.parse(body));
     const messageData = {
       recipient: {
@@ -52,7 +52,9 @@ function getJobsMessage(recipientId, category, locationName) {
         message = 'Yep, php is the place to be, do some work!';
         break;
     }
-    messageService.sendTextMessage(recipientId, message)
+
+    if (!payloadElements.length) { message = `Oh no. I couldn't find any ${category} jobs in ${locationName}.`}
+    messageService.sendTextMessage(recipientId, message);
     callSendAPI(messageData);
   })
 }
@@ -73,12 +75,7 @@ function getPayloadElements(jobs) {
         url: jobs[i].url,
         messenger_extensions: false,
         webview_height_ratio: 'COMPACT',
-      },
-      buttons: [
-        {
-          type: "element_share"
-        }
-      ]
+      }
     })
   }
 
@@ -97,32 +94,32 @@ function getEventFilterOptions(recipientId) {
         {
           content_type: "text",
           title: "JavaScript",
-          payload: "JS"
+          payload: "javascript_jobs"
         },
         {
           content_type: "text",
           title: "Java",
-          payload: "JAVA"
+          payload: "java_jobs"
         },
         {
           content_type: "text",
           title: "Ruby",
-          payload: "RUBY"
+          payload: "ruby_jobs"
         },
         {
           content_type: "text",
           title: "Python",
-          payload: "PYTHON"
+          payload: "python_jobs"
         },
         {
           content_type: "text",
           title: "Go",
-          payload: "GO"
+          payload: "go_jobs"
         },
         {
           content_type: "text",
           title: "PHP",
-          payload: "PHP"
+          payload: "php_jobs"
         }
       ]
     }
