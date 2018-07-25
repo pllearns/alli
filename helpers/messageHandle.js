@@ -86,6 +86,8 @@ function processMessageFromPage(event) {
         const languages = nlpService.intentDefined(message.nlp, 'languages');
         const location = nlpService.intentDefined(message.nlp, 'location');
         const preferences = nlpService.intentDefined(message.nlp, 'preferences');
+        const quiz = nlpService.intentDefined(message.nlp, 'quiz');
+        const mentee = nlpService.intentDefined(message.nlp, 'mentorship');
         const functionality = nlpService.intentDefined(message.nlp, 'functionality');
         const chitchat = nlpService.intentDefined(message.nlp, 'chitchat');
 
@@ -103,7 +105,7 @@ function processMessageFromPage(event) {
             greetingService.addTimeGreeted();
             if (greetingService.timesGreeted === 1) {
                 const timelyGreeting = greetingService.timeSensitive();
-                messageService.sendTextMessage(senderID, `${ timelyGreeting } I'm Alli and I'm your tech ally! 🙋🏾‍`);
+                messageService.sendTextMessage(senderID, `${timelyGreeting} I'm Alli and I'm your tech ally! 🙋🏾‍`);
                 setTimeout(() => {
                     const message = 'I can let you know about some upcoming *events*, find you a *mentor*, or even show you some *jobs* you might be interested in.';
                     messageService.sendTextMessage(senderID, message);
@@ -165,6 +167,22 @@ function processMessageFromPage(event) {
             resetIdkMessages();
             messageService.sendTextMessage(senderID, "Here are some popular recruiting resources.");
             const messageData = recruitingService.getRecruitingServices(senderID);
+            callSendAPI(messageData);
+        }
+
+        // quiz and other info on SWE
+        else if (quiz && quiz.confidence > 0.7) {
+            resetIdkMessages();
+            messageService.sendTextMessage(senderID, "Take a quiz or read more about becoming a software engineer.");
+            const messageData = quizService.getQuizServices(senderID);
+            callSendAPI(messageData);
+        }
+
+        // Mentor
+        else if (mentee && mentee.confidence > 0.7) {
+            resetIdkMessages();
+            messageService.sendTextMessage(senderID, "Do you need a mentor? Check out these resources.");
+            const messageData = mentorService.getMenteeForms(senderID);
             callSendAPI(messageData);
         }
 
