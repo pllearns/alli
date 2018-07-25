@@ -14,7 +14,8 @@ const
     threadService = require('../services/thread.service'),
     userService = require('../services/user.service'),
     greetingService = require('../services/greeting.service'),
-    languageService = require('../services/language.service');
+    languageService = require('../services/language.service'),
+    quizService = require('../services/quiz.service');
 
 let idkMessages = 0;
 
