@@ -13,7 +13,8 @@ const
     jobService = require('../services/jobs.service'),
     threadService = require('../services/thread.service'),
     userService = require('../services/user.service'),
-    greetingService = require('../services/greeting.service');
+    greetingService = require('../services/greeting.service'),
+    quizService = require('../services/quiz.service');
 
 function handlePostback(event) {
     const
@@ -105,6 +106,7 @@ function processMessageFromPage(event) {
         const languages = nlpService.intentDefined(message.nlp, 'languages');
         const location = nlpService.intentDefined(message.nlp, 'location');
         const preferences = nlpService.intentDefined(message.nlp, 'preferences');
+        const quiz = nlpService.intentDefined(message.nlp, 'quiz');
 
         // Greeting
         if (greeting && greeting.confidence > 0.7) {
@@ -156,7 +158,12 @@ function processMessageFromPage(event) {
             const messageData = recruitingService.getRecruitingServices(senderID);
             callSendAPI(messageData);
         }
-
+        // quiz and other info on SWE
+        else if (quiz && quiz.confidence > 0.7) {
+            messageService.sendTextMessage(senderID, "Take a quiz or read more about becoming a software engineer.");
+            const messageData = quizService.getQuizServices(senderID);
+            callSendAPI(messageData);
+        }
         // Help
         else if (help && help.confidence > 0.7) {
             const messageData = optionService.getDefaultOptions(senderID);
