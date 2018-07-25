@@ -104,8 +104,7 @@ function processMessageFromPage(event) {
             resetIdkMessages();
             greetingService.addTimeGreeted();
             if (greetingService.timesGreeted === 1) {
-                const timelyGreeting = greetingService.timeSensitive();
-                messageService.sendTextMessage(senderID, `${timelyGreeting} I'm Alli and I'm your tech ally! 🙋🏾‍`);
+                messageService.sendTextMessage(senderID, `I'm Alli and I'm your tech ally! 🙋🏾‍`);
                 setTimeout(() => {
                     const message = 'I can let you know about some upcoming *events*, find you a *mentor*, or even show you some *jobs* you might be interested in.';
                     messageService.sendTextMessage(senderID, message);
