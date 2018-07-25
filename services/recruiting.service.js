@@ -1,7 +1,5 @@
 'use strict';
 
-const meetupService = require('./meetup.service')
-
 const recruitingService = {
   getRecruitingServices,
 
