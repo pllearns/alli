@@ -107,6 +107,7 @@ function processMessageFromPage(event) {
         const location = nlpService.intentDefined(message.nlp, 'location');
         const preferences = nlpService.intentDefined(message.nlp, 'preferences');
         const quiz = nlpService.intentDefined(message.nlp, 'quiz');
+        const mentee = nlp.intentDefined(message.nlp, 'mentorship');
 
         // Greeting
         if (greeting && greeting.confidence > 0.7) {
@@ -164,6 +165,14 @@ function processMessageFromPage(event) {
             const messageData = quizService.getQuizServices(senderID);
             callSendAPI(messageData);
         }
+
+        // Mentor
+        else if (mentee && mentee.confidence > 0.7) {
+            messageService.sendTextMessage(senderID, "Take a quiz or read more about becoming a software engineer.");
+            const messageData = mentorService.getMenteeForms(senderID);
+            callSendAPI(messageData);
+        }
+
         // Help
         else if (help && help.confidence > 0.7) {
             const messageData = optionService.getDefaultOptions(senderID);
