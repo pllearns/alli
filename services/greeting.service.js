@@ -1,19 +1,19 @@
 'use strict';
 
 const greetingService = {
-    timeSensitive: getTimeSensitiveGreeting,
-    addTimeGreeted: addTimeGreeted,
-    timesGreeted: 0
+  timeSensitive: getTimeSensitiveGreeting,
+  addTimeGreeted: addTimeGreeted,
+  timesGreeted: 0
 };
 
 function getTimeSensitiveGreeting() {
   const
-      currentHour = new Date().getHours(),
-      greetingMap = {
-        morning: ['Good Morning!'],
-        afternoon: ['Good afternoon!', 'Hey, hope your day is going well so far!'],
-        evening: ['Good evening!', 'Hey, hope your day went well!']
-      };
+    currentHour = Date.now().getHours(),
+    greetingMap = {
+      morning: ['Good Morning!'],
+      afternoon: ['Good afternoon!', 'Hey, hope your day is going well so far!'],
+      evening: ['Good evening!', 'Hey, hope your day went well!']
+    };
 
   let timeOfDay;
 
@@ -29,7 +29,7 @@ function getTimeSensitiveGreeting() {
 }
 
 function addTimeGreeted() {
-    this.timesGreeted++;
+  this.timesGreeted++;
 }
 
 module.exports = greetingService;
