@@ -118,8 +118,15 @@ function processMessageFromPage(event) {
 
         } else {
 
+            // Offensive
+            if (offensive && offensive.confidence > 0.7) {
+                resetIdkMessages();
+                messageService.sendTextMessage(senderID, 'Oh, no. You must have lost your mind speaking to me like that. Goodbye!');
+                silentTreatment = true;
+            }
+
             // Greeting
-            if (greeting && greeting.confidence > 0.7) {
+            else if (greeting && greeting.confidence > 0.7) {
                 resetIdkMessages();
                 greetingService.addTimeGreeted();
                 if (!greeted) {
@@ -299,13 +306,6 @@ function processMessageFromPage(event) {
                     randomIdx = Math.floor(Math.random() * Math.floor(yw.length));
                 resetIdkMessages();
                 messageService.sendTextMessage(senderID, yw[randomIdx]);
-            }
-
-            // Offensive
-            else if (offensive && offensive.confidence > 0.7) {
-                resetIdkMessages();
-                messageService.sendTextMessage(senderID, 'Oh, no. You must have lost your mind speaking to me like that. Goodbye!');
-                silentTreatment = true;
             }
 
             // IDK
