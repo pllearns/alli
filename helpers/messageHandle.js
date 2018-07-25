@@ -90,7 +90,7 @@ function processMessageFromPage(event) {
         currentThread = threadService.getCurrentThread(),
         user = userService.getUser();
 
-    console.log('user => ', user);
+    console.log('user => ', user, pageID, timeOfMessage);
     let messageText = null;
 
     message.quick_reply ? handleQuickReplyResponse(event) : messageText = message.text;
@@ -178,12 +178,11 @@ function processMessageFromPage(event) {
             }
         }
         // IDK
-    }
-
-    else {
-        messageService.sendTextMessage(senderID, "Sorry, I didn't understand.");
-        const messageData = optionService.getDefaultOptions(senderID);
-        callSendAPI(messageData);
+        else {
+            messageService.sendTextMessage(senderID, "Sorry, I didn't understand.");
+            const messageData = optionService.getDefaultOptions(senderID);
+            callSendAPI(messageData);
+        }
     }
 }
 
