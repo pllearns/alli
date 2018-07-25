@@ -8,7 +8,7 @@ const greetingService = {
 
 function getTimeSensitiveGreeting() {
   const
-    currentHour = Date.now().getHours(),
+    currentHour = new Date().getHours(),
     greetingMap = {
       morning: ['Good Morning!'],
       afternoon: ['Good afternoon!', 'Hey, hope your day is going well so far!'],
