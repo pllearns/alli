@@ -16,7 +16,7 @@ function getDefaultOptions(recipientId) {
         type: "template",
         payload: {
           template_type: "button",
-          text: 'What can I help with today?',
+          text: 'What can I help with?',
           buttons: [
             {
               "type": "postback",

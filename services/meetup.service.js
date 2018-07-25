@@ -26,6 +26,10 @@ function getEvents(category, recipientId) {
         } else {
             const message = `Oh no.. it doesn't appear there are any upcoming events of that type in ${data.city.city}!`;
             messageService.sendTextMessage(recipientId, message);
+            setTimeout(() => {
+                const message = `Do you want to search for general tech events instead?`;
+                messageService.sendTextMessage(recipientId, message);
+            }, 3000);
         }
 
     });

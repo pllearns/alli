@@ -3,13 +3,16 @@
 const request = require('request');
 const config = require('../config');
 const messageService = require('./message.service');
+const languageService = require('./language.service');
 const callSendAPI = require('../helpers/apiHelper');
 
 const jobService = {
   getJobsMessage: getJobsMessage,
   getPayloadElements: getPayloadElements,
-  getFilterOptions: getEventFilterOptions
+  getFilterOptions: getEventFilterOptions,
 };
+
+let informedOfChange = false;
 
 function getJobsMessage(recipientId, category, locationName) {
   console.log('category => ', category, locationName);
@@ -30,32 +33,25 @@ function getJobsMessage(recipientId, category, locationName) {
       }
     };
 
-    let message = '';
+    const formattedCategory = languageService.getDisplayValue(category);
 
-    switch (category) {
-      case 'javascript':
-        message = 'You love JavaScript? These jobs should peak your interest!';
-        break;
-      case 'java':
-        message = 'Java is awesome, and so are you! Time to find that next Java position!';
-        break;
-      case 'ruby':
-        message = 'Riding the rails on Ruby, oh yeah! Here are some opportunities for Ruby Developers!';
-        break;
-      case 'python':
-        message = 'The language of AI is just too cool, now on to a cool job in Python!';
-        break;
-      case 'go':
-        message = 'golang all day! Jobs in this language are right below!';
-        break;
-      case 'php':
-        message = 'Yep, php is the place to be, do some work!';
-        break;
+    let message = `Here are some ${formattedCategory} jobs in ${locationName.capitalize()}.`;
+
+    if (!payloadElements.length) {
+        const message = `I couldn't find any ${category} jobs in ${locationName.capitalize()}. 🤷🏾‍`;
+        messageService.sendTextMessage(recipientId, message);
+    } else {
+        messageService.sendTextMessage(recipientId, message);
+        callSendAPI(messageData);
     }
 
-    if (!payloadElements.length) { message = `Oh no. I couldn't find any ${category} jobs in ${locationName}.`}
-    messageService.sendTextMessage(recipientId, message);
-    callSendAPI(messageData);
+    if (!informedOfChange) {
+        setTimeout(() => {
+            messageService.sendTextMessage(recipientId, 'If you want to search for jobs in a different language, just say the *language*.');
+            informedOfChange = true;
+        }, 2000);
+    }
+
   })
 }
 
