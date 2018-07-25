@@ -108,12 +108,13 @@ function processMessageFromPage(event) {
 
         // Greeting
         if (greeting && greeting.confidence > 0.7) {
-            if (greetingService.timesGreeted >= 1) {
+            greetingService.addTimeGreeted();
+            if (greetingService.timesGreeted === 1) {
                 const timelyGreeting = greetingService.timeSensitive();
                 messageService.sendTextMessage(senderID, `${timelyGreeting} I'm Alli and I'm your tech ally! 🙋🏾‍`);
                 messageService.sendTextMessage(senderID, 'I can let you know about some upcoming events, find you a mentor, or even show you some jobs you might be interested in.');
-                greetingService.addTimeGreeted();
-            } else {
+                console.log(greetingService.timesGreeted)
+            } else if (greetingService.timesGreeted > 1) {
                 const hellos = ['Well, we meet again!', 'Hey there!', 'Hiya!', 'Howdy!', 'Greetings!', 'Hi again!'],
                     randomIdx = Math.floor(Math.random() * Math.floor(hellos.length));
                 messageService.sendTextMessage(senderID, hellos[randomIdx]);
