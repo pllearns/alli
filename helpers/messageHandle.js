@@ -167,7 +167,6 @@ function processMessageFromPage(event) {
         }
         // quiz and other info on SWE
         else if (quiz && quiz.confidence > 0.7) {
-            resetIdkMessages();
             messageService.sendTextMessage(senderID, "Take a quiz or read more about becoming a software engineer.");
             const messageData = quizService.getQuizServices(senderID);
             callSendAPI(messageData);
