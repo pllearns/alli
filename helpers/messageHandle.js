@@ -114,7 +114,7 @@ function processMessageFromPage(event) {
                 messageService.sendTextMessage(senderID, `${timelyGreeting} I'm Alli and I'm your tech ally! 🙋🏾‍`);
                 messageService.sendTextMessage(senderID, 'I can let you know about some upcoming events, find you a mentor, or even show you some jobs you might be interested in.');
                 console.log(greetingService.timesGreeted)
-            } else if (greetingService.timesGreeted > 1) {
+            } else {
                 const hellos = ['Well, we meet again!', 'Hey there!', 'Hiya!', 'Howdy!', 'Greetings!', 'Hi again!'],
                     randomIdx = Math.floor(Math.random() * Math.floor(hellos.length));
                 messageService.sendTextMessage(senderID, hellos[randomIdx]);
