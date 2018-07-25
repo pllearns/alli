@@ -71,11 +71,7 @@ function processMessageFromPage(event) {
         currentThread = threadService.getCurrentThread(),
         user = userService.getUser();
 
-    console.log('user => ', user);
-    console.log('currentThread => ', currentThread);
-    let messageText = null;
-
-    message.quick_reply ? handleQuickReplyResponse(event) : messageText = message.text;
+    const messageText = message.text;
 
     if (messageText) {
         const greeting = nlpService.intentDefined(message.nlp, 'greetings');
@@ -87,28 +83,21 @@ function processMessageFromPage(event) {
         const languages = nlpService.intentDefined(message.nlp, 'languages');
         const location = nlpService.intentDefined(message.nlp, 'location');
         const preferences = nlpService.intentDefined(message.nlp, 'preferences');
-        const quiz = nlpService.intentDefined(message.nlp, 'quiz');
-        const mentee = nlpService.intentDefined(message.nlp, 'mentorship');
         const functionality = nlpService.intentDefined(message.nlp, 'functionality');
         const chitchat = nlpService.intentDefined(message.nlp, 'chitchat');
-
-        console.log('preferences => ', preferences);
-        console.log('location => ', location);
-        console.log('languages => ', languages);
-        console.log('job => ', job);
-
-        console.log('MAIN EVENT ====> ', event);
+        const quiz = nlpService.intentDefined(message.nlp, 'quiz');
+        const mentee = nlpService.intentDefined(message.nlp, 'mentorship');
 
         // Greeting
         if (greeting && greeting.confidence > 0.7) {
-            greeted = true;
             resetIdkMessages();
             greetingService.addTimeGreeted();
-            if (greetingService.timesGreeted === 1) {
-                messageService.sendTextMessage(senderID, `I'm Alli and I'm your tech ally! 🙋🏾‍`);
+            if (!greeted) {
+                messageService.sendTextMessage(senderID, `🙋🏾‍ Hi there! I'm Alli and I'm your tech ally.`);
                 setTimeout(() => {
                     const message = 'I can let you know about some upcoming *events*, find you a *mentor*, or even show you some *jobs* you might be interested in.';
                     messageService.sendTextMessage(senderID, message);
+                    greeted = true;
                 }, 3000);
             } else {
                 const hellos = ['Well, we meet again!', 'Hey there!', 'Hiya!', 'Howdy!', 'Greetings!', 'Hi again!'],
@@ -170,6 +159,7 @@ function processMessageFromPage(event) {
             callSendAPI(messageData);
         }
 
+<<<<<<< HEAD
         // quiz and other info on SWE
         else if (quiz && quiz.confidence > 0.7) {
             messageService.sendTextMessage(senderID, "Take a quiz or read more about becoming a software engineer.");
@@ -185,6 +175,8 @@ function processMessageFromPage(event) {
             callSendAPI(messageData);
         }
 
+=======
+>>>>>>> cc0ed80b9569bf30ee74ddf6bbcdf374bf5eb72e
         // Functionality
         else if (functionality && functionality.confidence > 0.7) {
             resetIdkMessages();
@@ -219,6 +211,28 @@ function processMessageFromPage(event) {
                 }
             }
 
+        }
+
+        // quiz and other info on SWE
+        else if (quiz && quiz.confidence > 0.7) {
+            resetIdkMessages();
+            messageService.sendTextMessage(senderID, "Take a quiz or read more about becoming a software engineer.");
+            const messageData = quizService.getQuizServices(senderID);
+            callSendAPI(messageData);
+        }
+
+        // Mentor
+        else if (mentee && mentee.confidence > 0.7) {
+            resetIdkMessages();
+            messageService.sendTextMessage(senderID, "A mentor can be a great asset in reaching the next level of your career.");
+            setTimeout(() => {
+                const messageData = mentorService.getMenteeForms(senderID);
+                callSendAPI(messageData);
+
+                setTimeout(() => {
+                    messageService.sendTextMessage(senderID, "Just fill out the form above and we'll match you with someone that has the guidance you're looking for. \n \nSimple as that!");
+                }, 3000);
+            }, 3000);
         }
 
         // Help
