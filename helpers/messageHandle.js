@@ -86,6 +86,7 @@ function processMessageFromPage(event) {
         const chitchat = nlpService.intentDefined(message.nlp, 'chitchat');
         const quiz = nlpService.intentDefined(message.nlp, 'quiz');
         const mentee = nlpService.intentDefined(message.nlp, 'mentorship');
+        const gratitude = nlpService.intentDefined(message.nlp, 'gratitude');
 
         // Greeting
         if (greeting && greeting.confidence > 0.7) {
@@ -260,6 +261,14 @@ function processMessageFromPage(event) {
                     jobService.getJobsMessage(senderID, user.language, user.location);
                 }
             }
+        }
+
+        // Gratitude
+        else if (gratitude && gratitude.confidence > 0.7) {
+            const yw = ['You\'re so welcome.', 'No problem!', 'Always happy to help!', 'You\'re welcome!', 'Np!'],
+                randomIdx = Math.floor(Math.random() * Math.floor(yw.length));
+            resetIdkMessages();
+            messageService.sendTextMessage(senderID, yw[randomIdx]);
         }
 
         // IDK
