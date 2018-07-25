@@ -14,13 +14,9 @@ const
     threadService = require('../services/thread.service'),
     userService = require('../services/user.service'),
     greetingService = require('../services/greeting.service'),
-<<<<<<< HEAD
-    quizService = require('../services/quiz.service');
-=======
     languageService = require('../services/language.service');
 
 let idkMessages = 0;
->>>>>>> ac7244be57679b1e5508d9025235dbfcf8a00ac6
 
 function handlePostback(event) {
     const
@@ -73,12 +69,8 @@ function processMessageFromPage(event) {
         currentThread = threadService.getCurrentThread(),
         user = userService.getUser();
 
-<<<<<<< HEAD
-    console.log('user => ', user, pageID, timeOfMessage);
-=======
     console.log('user => ', user);
     console.log('currentThread => ', currentThread);
->>>>>>> ac7244be57679b1e5508d9025235dbfcf8a00ac6
     let messageText = null;
 
     message.quick_reply ? handleQuickReplyResponse(event) : messageText = message.text;
@@ -109,17 +101,11 @@ function processMessageFromPage(event) {
             greetingService.addTimeGreeted();
             if (greetingService.timesGreeted === 1) {
                 const timelyGreeting = greetingService.timeSensitive();
-<<<<<<< HEAD
                 messageService.sendTextMessage(senderID, `${timelyGreeting} I'm Alli and I'm your tech ally! 🙋🏾‍`);
-                messageService.sendTextMessage(senderID, 'I can let you know about some upcoming events, find you a mentor, or even show you some jobs you might be interested in.');
-                console.log(greetingService.timesGreeted)
-=======
-                messageService.sendTextMessage(senderID, `${ timelyGreeting } I'm Alli and I'm your tech ally! 🙋🏾‍`);
                 setTimeout(() => {
                     const message = 'I can let you know about some upcoming *events*, find you a *mentor*, or even show you some *jobs* you might be interested in.';
                     messageService.sendTextMessage(senderID, message);
                 }, 3000);
->>>>>>> ac7244be57679b1e5508d9025235dbfcf8a00ac6
             } else {
                 const hellos = ['Well, we meet again!', 'Hey there!', 'Hiya!', 'Howdy!', 'Greetings!', 'Hi again!'],
                     randomIdx = Math.floor(Math.random() * Math.floor(hellos.length));
