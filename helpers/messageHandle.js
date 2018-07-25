@@ -17,7 +17,8 @@ const
     languageService = require('../services/language.service'),
     quizService = require('../services/quiz.service');
 
-let idkMessages = 0;
+let idkMessages = 0,
+    greeted = false;
 
 function handlePostback(event) {
     const
@@ -88,6 +89,8 @@ function processMessageFromPage(event) {
         const preferences = nlpService.intentDefined(message.nlp, 'preferences');
         const quiz = nlpService.intentDefined(message.nlp, 'quiz');
         const mentee = nlpService.intentDefined(message.nlp, 'mentorship');
+        const functionality = nlpService.intentDefined(message.nlp, 'functionality');
+        const chitchat = nlpService.intentDefined(message.nlp, 'chitchat');
 
         console.log('preferences => ', preferences);
         console.log('location => ', location);
@@ -98,11 +101,11 @@ function processMessageFromPage(event) {
 
         // Greeting
         if (greeting && greeting.confidence > 0.7) {
+            greeted = true;
             resetIdkMessages();
             greetingService.addTimeGreeted();
             if (greetingService.timesGreeted === 1) {
-                const timelyGreeting = greetingService.timeSensitive();
-                messageService.sendTextMessage(senderID, `${timelyGreeting} I'm Alli and I'm your tech ally! 🙋🏾‍`);
+                messageService.sendTextMessage(senderID, `I'm Alli and I'm your tech ally! 🙋🏾‍`);
                 setTimeout(() => {
                     const message = 'I can let you know about some upcoming *events*, find you a *mentor*, or even show you some *jobs* you might be interested in.';
                     messageService.sendTextMessage(senderID, message);
@@ -166,6 +169,7 @@ function processMessageFromPage(event) {
             const messageData = recruitingService.getRecruitingServices(senderID);
             callSendAPI(messageData);
         }
+
         // quiz and other info on SWE
         else if (quiz && quiz.confidence > 0.7) {
             messageService.sendTextMessage(senderID, "Take a quiz or read more about becoming a software engineer.");
@@ -179,6 +183,42 @@ function processMessageFromPage(event) {
             messageService.sendTextMessage(senderID, "Do you need a mentor? Check out these resources.");
             const messageData = mentorService.getMenteeForms(senderID);
             callSendAPI(messageData);
+        }
+
+        // Functionality
+        else if (functionality && functionality.confidence > 0.7) {
+            resetIdkMessages();
+            messageService.sendTextMessage(senderID, "I can let you know about upcoming *events*, help find you a *mentor*, or show you some *jobs* you might be interested in.");
+        }
+
+        // Chit Chat
+        else if (chitchat && chitchat.confidence > 0.7) {
+            resetIdkMessages();
+
+            if (chitchat.value === 'whats up') {
+                messageService.sendTextMessage(senderID, "Oh, you know. Just being as helpful as I can.");
+                setTimeout(() => {
+                    messageService.sendTextMessage(senderID, "Speaking of.. how can I help YOU today? Jobs, mentorship, events, you name it.");
+                    greeted = true;
+                }, 3000);
+            } else {
+                const feels = ["I'm doing really well, thanks!", "I can't complain.", "Blue skies today. I can't complain!"],
+                    randomIdx = Math.floor(Math.random() * Math.floor(feels.length));
+                messageService.sendTextMessage(senderID, feels[randomIdx]);
+
+                if (!greeted) {
+                    setTimeout(() => {
+                        messageService.sendTextMessage(senderID, `By the way, I'm Alli! 🙋🏾‍`);
+
+                        setTimeout(() => {
+                            const message = 'I can let you know about some upcoming *events*, find you a *mentor*, or even show you some *jobs* you might be interested in.';
+                            messageService.sendTextMessage(senderID, message);
+                            greeted = true;
+                        }, 3000);
+                    }, 3000);
+                }
+            }
+
         }
 
         // Help
@@ -226,6 +266,7 @@ function processMessageFromPage(event) {
                 }
             }
         }
+
         // IDK
         else {
             idkMessages++;
