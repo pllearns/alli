@@ -160,24 +160,6 @@ function processMessageFromPage(event) {
             callSendAPI(messageData);
         }
 
-<<<<<<< HEAD
-        // quiz and other info on SWE
-        else if (quiz && quiz.confidence > 0.7) {
-            messageService.sendTextMessage(senderID, "Take a quiz or read more about becoming a software engineer.");
-            const messageData = quizService.getQuizServices(senderID);
-            callSendAPI(messageData);
-        }
-
-        // Mentor
-        else if (mentee && mentee.confidence > 0.7) {
-            resetIdkMessages();
-            messageService.sendTextMessage(senderID, "Do you need a mentor? Check out these resources.");
-            const messageData = mentorService.getMenteeForms(senderID);
-            callSendAPI(messageData);
-        }
-
-=======
->>>>>>> cc0ed80b9569bf30ee74ddf6bbcdf374bf5eb72e
         // Functionality
         else if (functionality && functionality.confidence > 0.7) {
             resetIdkMessages();
