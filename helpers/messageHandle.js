@@ -174,7 +174,7 @@ function processMessageFromPage(event) {
 
         // Mentor
         else if (mentee && mentee.confidence > 0.7) {
-            messageService.sendTextMessage(senderID, "Take a quiz or read more about becoming a software engineer.");
+            messageService.sendTextMessage(senderID, "Do you need a mentor? Check out these resources.");
             const messageData = mentorService.getMenteeForms(senderID);
             callSendAPI(messageData);
         }
