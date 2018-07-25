@@ -177,13 +177,13 @@ function processMessageFromPage(event) {
                 messageService.sendTextMessage(senderID, "Let's find some jobs. What language do you primarily code in?");
             }
         }
-
         // IDK
-        else {
-            messageService.sendTextMessage(senderID, "Sorry, I didn't understand.");
-            const messageData = optionService.getDefaultOptions(senderID);
-            callSendAPI(messageData);
-        }
+    }
+
+    else {
+        messageService.sendTextMessage(senderID, "Sorry, I didn't understand.");
+        const messageData = optionService.getDefaultOptions(senderID);
+        callSendAPI(messageData);
     }
 }
 
