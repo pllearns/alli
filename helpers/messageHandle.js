@@ -94,6 +94,7 @@ function processMessageFromPage(event) {
         const apology = nlpService.intentDefined(message.nlp, 'apology');
         const mentor = nlpService.intentDefined(message.nlp, 'mentor');
         const compliment = nlpService.intentDefined(message.nlp, 'compliment');
+        const meetup = nlpService.intentDefined(message.nlp, 'meetup');
 
         // After offensive comment, Alli will shun the user until they apologize
         if (silentTreatment) {
@@ -188,13 +189,15 @@ function processMessageFromPage(event) {
                 resetIdkMessages();
                 threadService.setCurrentThread('events');
                 const messageData = eventService.getFilterOptions(senderID);
-                if (location && location.confidence) {
-                    callSendAPI(messageData);
-                    threadService.setCurrentThread(previousThread);
-                } else {
-                    messageService.sendTextMessage(senderID, `Where do you want to meetup?`);
-                }
+                callSendAPI(messageData);
+            }
 
+            // Meetup as follow up to events
+            else if (meetup && meetup.confidence > 0.7) {
+                resetIdkMessages();
+                threadService.setCurrentThread('meetup');
+                const messageData = meetupService.getEvents(meetup, senderID);
+                callSendAPI(messageData);
             }
 
             // Recruiting
@@ -336,7 +339,7 @@ function processMessageFromPage(event) {
                 if (compliment.value === "awesome") {
                     messageService.sendTextMessage(senderID, "No, you're awesome!");
                 }
-                const comps = ['I appreciate you so much!', 'Don\'t ever give up!', 'Thanks, and I think you will accomplish all of your goals!'],
+                const comps = ['I appreciate you so much!', 'Don\'t ever give up!', 'Thanks, and I think you will accomplish all of your'],
                     randomIdx = Math.floor(Math.random() * Math.floor(comps.length));
                 resetIdkMessages();
                 messageService.sendTextMessage(senderID, comps[randomIdx]);
