@@ -128,6 +128,13 @@ function processMessageFromPage(event) {
                 userService.updateUser(senderID, 'silentTreatment', true);
             }
 
+            // Goodbye
+            else if (bye && bye.confidence > 0.7) {
+                resetIdkMessages(senderID);
+                const bye = goodbyeService.timeSensitiveBye();
+                messageService.sendTextMessage(senderID, bye);
+            }
+
             // Greeting
             else if (greeting && greeting.confidence > 0.7) {
                 resetIdkMessages(senderID);
@@ -144,13 +151,6 @@ function processMessageFromPage(event) {
                         randomIdx = Math.floor(Math.random() * Math.floor(hellos.length));
                     messageService.sendTextMessage(senderID, hellos[randomIdx]);
                 }
-            }
-
-            // Goodbye
-            else if (bye && bye.confidence > 0.7) {
-                resetIdkMessages(senderID);
-                const bye = goodbyeService.timeSensitiveBye();
-                messageService.sendTextMessage(senderID, bye);
             }
 
             // Job
