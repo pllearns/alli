@@ -245,7 +245,7 @@ function processMessageFromPage(event) {
             // Mentor
             else if (mentor && mentor.confidence > 0.7) {
                 resetIdkMessages();
-                messageService.sendTextMessage(senderID, "A mentor can be a great asset in reaching the next level of your career.");
+                messageService.sendTextMessage(senderID, "Being a mentor is awesome, guiding someone to accomplish their goals is rewarding!");
                 setTimeout(() => {
                     const messageData = mentorService.getMentorForms(senderID);
                     callSendAPI(messageData);
