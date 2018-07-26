@@ -189,8 +189,8 @@ function processMessageFromPage(event) {
                 threadService.setCurrentThread('events');
                 const messageData = eventService.getFilterOptions(senderID);
                 if (location && location.confidence) {
-                    threadService.setCurrentThread(previousThread);
                     callSendAPI(messageData);
+                    threadService.setCurrentThread(previousThread);
                 } else {
                     messageService.sendTextMessage(senderID, `Where do you want to meetup?`);
                 }
