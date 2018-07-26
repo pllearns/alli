@@ -82,7 +82,7 @@ function processMessageFromPage(event) {
 
     if (messageText) {
         const greeting = nlpService.intentDefined(message.nlp, 'greetings');
-        const bye = nlpService.intentDefined(message.nlp, 'bye');
+        const bye = nlpService.intentDefined(message.nlp, 'goodbye');
         const job = nlpService.intentDefined(message.nlp, 'employment');
         const recruiter = nlpService.intentDefined(message.nlp, 'recruiting');
         const help = nlpService.intentDefined(message.nlp, 'help');
