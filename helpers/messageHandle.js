@@ -14,17 +14,8 @@ const
     threadService = require('../services/thread.service'),
     greetingService = require('../services/greeting.service'),
     languageService = require('../services/language.service'),
+    userService = require('../services/user.service'),
     quizService = require('../services/quiz.service');
-
-let idkMessages = 0,
-    greeted = false,
-    silentTreatment = false,
-    attemptsToTalk = 0;
-
-const user = {
-    language: null,
-    location: null
-};
 
 function handlePostback(event) {
     const
@@ -78,6 +69,11 @@ function processMessageFromPage(event) {
 
     let messageText = message.text;
 
+    let user = userService.getUser(senderID);
+    if (!user) { user = userService.newUser(senderID); }
+
+    console.log(user);
+
     message.quick_reply ? handleQuickReplyResponse(event) : messageText = message.text;
 
     if (messageText) {
@@ -102,15 +98,15 @@ function processMessageFromPage(event) {
         const meetup = nlpService.intentDefined(message.nlp, 'meetup');
 
         // After offensive comment, Alli will shun the user until they apologize
-        if (silentTreatment) {
-            attemptsToTalk++;
+        if (user.silentTreatment) {
+            userService.updateUser(senderID, 'attemptsToTalk', user.attemptsToTalk + 1);
 
             if (apology && apology.confidence > 0.7) {
-                silentTreatment = false;
-                attemptsToTalk = 0;
+                userService.updateUser(senderID, 'silentTreatment', false);
+                userService.updateUser(senderID, 'attemptsToTalk', 0);
                 messageService.sendTextMessage(senderID, "Apology accepted. Now, what can I help you with today?");
             } else {
-                switch (attemptsToTalk) {
+                switch (user.attemptsToTalk) {
                     case 3:
                         messageService.sendTextMessage(senderID, "I'll take an apology at any time.");
                         break;
@@ -129,21 +125,21 @@ function processMessageFromPage(event) {
 
             // Offensive
             if (offensive && offensive.confidence > 0.7) {
-                resetIdkMessages();
+                resetIdkMessages(senderID);
                 messageService.sendTextMessage(senderID, 'Oh, no. You must have lost your mind speaking to me like that. Goodbye!');
-                silentTreatment = true;
+                userService.updateUser(senderID, 'silentTreatment', true);
             }
 
             // Greeting
             else if (greeting && greeting.confidence > 0.7) {
-                resetIdkMessages();
+                resetIdkMessages(senderID);
                 greetingService.addTimeGreeted();
-                if (!greeted) {
+                if (!user.greeted) {
                     messageService.sendTextMessage(senderID, `🙋🏾‍ Hi there! I'm Alli and I'm your tech ally.`);
                     setTimeout(() => {
                         const message = 'I can let you know about some upcoming *events*, find you a *mentor*, or even show you some *jobs* you might be interested in.';
                         messageService.sendTextMessage(senderID, message);
-                        greeted = true;
+                        userService.updateUser(senderID, 'greeted', true);
                     }, 3000);
                 } else {
                     const hellos = ['Well, we meet again!', 'Hey there!', 'Hiya!', 'Howdy!', 'Greetings!', 'Hi again!'],
@@ -154,14 +150,14 @@ function processMessageFromPage(event) {
 
             // Goodbye
             else if (bye && bye.confidence > 0.7) {
-                resetIdkMessages();
+                resetIdkMessages(senderID);
                 const bye = goodbyeService.timeSensitiveBye();
                 messageService.sendTextMessage(senderID, bye);
             }
 
             // Job
             else if (job && job.confidence > 0.7) {
-                resetIdkMessages();
+                resetIdkMessages(senderID);
                 threadService.setCurrentThread('jobs');
 
                 if (!user.location) {
@@ -173,7 +169,7 @@ function processMessageFromPage(event) {
 
             // Preferences
             else if (preferences && preferences.confidence > 0.7) {
-                resetIdkMessages();
+                resetIdkMessages(senderID);
                 const previousThread = threadService.getCurrentThread();
                 threadService.setCurrentThread('preferences');
 
@@ -185,7 +181,7 @@ function processMessageFromPage(event) {
 
             // Events
             else if (events && events.confidence > 0.7) {
-                resetIdkMessages();
+                resetIdkMessages(senderID);
                 threadService.setCurrentThread('events');
                 const messageData = eventService.getFilterOptions(senderID);
                 callSendAPI(messageData);
@@ -193,7 +189,7 @@ function processMessageFromPage(event) {
 
             // Recruiting
             else if (recruiter && recruiter.confidence > 0.7) {
-                resetIdkMessages();
+                resetIdkMessages(senderID);
                 messageService.sendTextMessage(senderID, "Here are some popular recruiting resources.");
                 const messageData = recruitingService.getRecruitingServices(senderID);
                 callSendAPI(messageData);
@@ -201,19 +197,19 @@ function processMessageFromPage(event) {
 
             // Functionality
             else if (functionality && functionality.confidence > 0.7) {
-                resetIdkMessages();
+                resetIdkMessages(senderID);
                 messageService.sendTextMessage(senderID, "I can let you know about upcoming *events*, help find you a *mentor*, or show you some *jobs* you might be interested in.");
             }
 
             // Chit Chat
             else if (chitchat && chitchat.confidence > 0.7) {
-                resetIdkMessages();
+                resetIdkMessages(senderID);
 
                 if (chitchat.value === 'whats up') {
                     messageService.sendTextMessage(senderID, "Oh, you know. Just being as helpful as I can.");
                     setTimeout(() => {
                         messageService.sendTextMessage(senderID, "Speaking of.. how can I help YOU today? Jobs, mentorship, events, you name it.");
-                        greeted = true;
+                        userService.updateUser(senderID, 'greeted', true);
                     }, 3000);
                 } else {
                     const feels = ["I'm doing really well, thanks!", "I can't complain.", "Blue skies today. I can't complain!"],
@@ -227,7 +223,7 @@ function processMessageFromPage(event) {
                             setTimeout(() => {
                                 const message = 'I can let you know about some upcoming *events*, find you a *mentor*, or even show you some *jobs* you might be interested in.';
                                 messageService.sendTextMessage(senderID, message);
-                                greeted = true;
+                                userService.updateUser(senderID, 'greeted', true);
                             }, 3000);
                         }, 3000);
                     }
@@ -237,7 +233,7 @@ function processMessageFromPage(event) {
 
             // quiz and other info on SWE
             else if (quiz && quiz.confidence > 0.7) {
-                resetIdkMessages();
+                resetIdkMessages(senderID);
                 messageService.sendTextMessage(senderID, "Take a quiz or read more about becoming a software engineer.");
                 const messageData = quizService.getQuizServices(senderID);
                 callSendAPI(messageData);
@@ -245,7 +241,7 @@ function processMessageFromPage(event) {
 
             // Mentor
             else if (mentor && mentor.confidence > 0.7) {
-                resetIdkMessages();
+                resetIdkMessages(senderID);
                 messageService.sendTextMessage(senderID, "Being a mentor is awesome, guiding someone to accomplish their goals is rewarding!");
                 setTimeout(() => {
                     const messageData = mentorService.getMentorForms(senderID);
@@ -259,7 +255,7 @@ function processMessageFromPage(event) {
 
             // Mentee
             else if (mentee && mentee.confidence > 0.7) {
-                resetIdkMessages();
+                resetIdkMessages(senderID);
                 messageService.sendTextMessage(senderID, "A mentor can be a great asset in reaching the next level of your career.");
                 setTimeout(() => {
                     const messageData = mentorService.getMenteeForms(senderID);
@@ -273,7 +269,7 @@ function processMessageFromPage(event) {
 
             // Help
             else if (help && help.confidence > 0.7) {
-                resetIdkMessages();
+                resetIdkMessages(senderID);
                 messageService.sendTextMessage(senderID, "Never fear: Alli's here! 💁🏾‍");
                 setTimeout(() => {
                     messageService.sendTextMessage(senderID, "I can\'t move mountains (yet), but I can let you know about upcoming *events*, help find you a *mentor*, or show you some *jobs* you might be interested in.");
@@ -286,11 +282,11 @@ function processMessageFromPage(event) {
 
             // Languages
             else if (languages && languages.confidence > 0.7) {
-                resetIdkMessages();
+                resetIdkMessages(senderID);
                 const language = languages.value;
                 const formattedLanguage = languageService.getDisplayValue(language);
 
-                user.language = language;
+                userService.updateUser(senderID, 'language', language);
 
                 if (currentThread === 'jobs') {
                     jobService.getJobsMessage(senderID, languages.value, user.location);
@@ -303,8 +299,8 @@ function processMessageFromPage(event) {
 
             // Location
             else if (location && location.confidence > 0.9) {
-                resetIdkMessages();
-                user.location = location.value;
+                resetIdkMessages(senderID);
+                userService.updateUser(senderID, 'location', location.value);
 
                 // User has entered the jobs thread and specified their location for the first time
                 if (currentThread === 'jobs') {
@@ -321,7 +317,7 @@ function processMessageFromPage(event) {
             else if (gratitude && gratitude.confidence > 0.7) {
                 const yw = ['You\'re so welcome.', 'No problem!', 'Always happy to help!', 'You\'re welcome!', 'Np!'],
                     randomIdx = Math.floor(Math.random() * Math.floor(yw.length));
-                resetIdkMessages();
+                resetIdkMessages(senderID);
                 messageService.sendTextMessage(senderID, yw[randomIdx]);
             }
 
@@ -332,16 +328,16 @@ function processMessageFromPage(event) {
                 }
                 const comps = ['I appreciate you so much!', 'Don\'t ever give up!', 'Thanks, and I think you will accomplish all of your'],
                     randomIdx = Math.floor(Math.random() * Math.floor(comps.length));
-                resetIdkMessages();
+                resetIdkMessages(senderID);
                 messageService.sendTextMessage(senderID, comps[randomIdx]);
             }
 
             // IDK
             else {
-                idkMessages++;
+                userService.updateUser(senderID, 'idkMessages', user.idkMessages + 1);
 
-                switch (idkMessages) {
-                    case 1:
+                switch (user.idkMessages) {
+                    case 0:
                         messageService.sendTextMessage(senderID, "Sorry, I didn't understand that.");
                         break;
                     case 2:
@@ -362,8 +358,8 @@ function processMessageFromPage(event) {
     }
 }
 
-function resetIdkMessages() {
-    idkMessages = 0;
+function resetIdkMessages(userId) {
+    userService.updateUser(userId, 'idkMessages', 0);
 }
 
 function handleQuickReplyResponse(event) {

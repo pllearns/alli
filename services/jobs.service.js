@@ -15,7 +15,6 @@ const jobService = {
 let informedOfChange = false;
 
 function getJobsMessage(recipientId, category, locationName) {
-  console.log('category => ', category, locationName);
   request(`https://jobs.github.com/positions.json?description=${category}&location=${locationName}`, (error, response, body) => {
     const payloadElements = jobService.getPayloadElements(JSON.parse(body));
     const messageData = {
