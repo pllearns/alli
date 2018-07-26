@@ -93,6 +93,7 @@ function processMessageFromPage(event) {
         const offensive = nlpService.intentDefined(message.nlp, 'offensive');
         const apology = nlpService.intentDefined(message.nlp, 'apology');
         const mentor = nlpService.intentDefined(message.nlp, 'mentor');
+        const compliment = nlpService.intentDefined(message.nlp, 'compliment');
 
         // After offensive comment, Alli will shun the user until they apologize
         if (silentTreatment) {
@@ -322,6 +323,17 @@ function processMessageFromPage(event) {
                     randomIdx = Math.floor(Math.random() * Math.floor(yw.length));
                 resetIdkMessages();
                 messageService.sendTextMessage(senderID, yw[randomIdx]);
+            }
+
+            // Compliment
+            else if (compliment && compliment.confidence > 0.7) {
+                if (compliment.value === "awesome") {
+                    messageService.sendTextMessage(senderID, "No, you're awesome!");
+                }
+                const comps = ['I appreciate you so much!', 'Don\'t ever give up!', 'Thanks, and I think you will accomplish all of your goals!'],
+                    randomIdx = Math.floor(Math.random() * Math.floor(comps.length));
+                resetIdkMessages();
+                messageService.sendTextMessage(senderID, comps[randomIdx]);
             }
 
             // IDK
