@@ -189,14 +189,7 @@ function processMessageFromPage(event) {
                 resetIdkMessages();
                 threadService.setCurrentThread('events');
                 const messageData = eventService.getFilterOptions(senderID);
-                callSendAPI(messageData);
-            }
-
-            // Meetup as follow up to events
-            else if (meetup && meetup.confidence > 0.7) {
-                resetIdkMessages();
-                threadService.setCurrentThread('meetup');
-                const messageData = meetupService.getEvents(meetup, senderID);
+                meetupService.getEvents(messageData);
                 callSendAPI(messageData);
             }
 
