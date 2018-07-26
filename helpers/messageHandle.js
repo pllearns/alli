@@ -31,7 +31,7 @@ function handlePostback(event) {
 
     if (payload.toLowerCase().endsWith('_jobs')) {
         const jobCategory = payload.toLowerCase().split('_')[0];
-        jobService.getJobsMessage(jobCategory, senderId);
+        jobService.getJobsMessage(senderId, jobCategory, 'San Francisco');
     }
 
     switch (payload.toLowerCase()) {
