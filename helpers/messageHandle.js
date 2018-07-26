@@ -175,15 +175,8 @@ function processMessageFromPage(event) {
                 const previousThread = threadService.getCurrentThread();
                 threadService.setCurrentThread('preferences');
 
-                // User has asked to change their coding language
-                if (languages && languages.confidence) {
-                    messageService.sendTextMessage(senderID, "Which language would you like to search for instead?");
-                    threadService.setCurrentThread(previousThread);
-                }
-
-                // User has asked to change their location
-                if (location && location.confidence) {
-                    messageService.sendTextMessage(senderID, "What city would you like to search in instead?");
+                if (preferences.value === 'change city') {
+                    messageService.sendTextMessage(senderID, "What would you like to set your primary location to?");
                     threadService.setCurrentThread(previousThread);
                 }
             }
