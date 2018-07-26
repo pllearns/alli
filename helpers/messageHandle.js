@@ -12,7 +12,6 @@ const
     recruitingService = require('../services/recruiting.service'),
     jobService = require('../services/jobs.service'),
     threadService = require('../services/thread.service'),
-    userService = require('../services/user.service'),
     greetingService = require('../services/greeting.service'),
     languageService = require('../services/language.service'),
     quizService = require('../services/quiz.service');
@@ -21,6 +20,11 @@ let idkMessages = 0,
     greeted = false,
     silentTreatment = false,
     attemptsToTalk = 0;
+
+const user = {
+    language: null,
+    location: null
+};
 
 function handlePostback(event) {
     const
@@ -70,8 +74,7 @@ function processMessageFromPage(event) {
         pageID = event.recipient.id,
         timeOfMessage = event.timestamp,
         message = event.message,
-        currentThread = threadService.getCurrentThread(),
-        user = userService.getUser();
+        currentThread = threadService.getCurrentThread();
 
     const messageText = message.text;
 
@@ -158,6 +161,7 @@ function processMessageFromPage(event) {
             else if (job && job.confidence > 0.7) {
                 resetIdkMessages();
                 threadService.setCurrentThread('jobs');
+
                 if (!user.location) {
                     messageService.sendTextMessage(senderID, 'Which city would you like to search for jobs in?');
                 } else {
@@ -291,7 +295,7 @@ function processMessageFromPage(event) {
                 const language = languages.value;
                 const formattedLanguage = languageService.getDisplayValue(language);
 
-                userService.setLanguage(language);
+                user.language = language;
 
                 if (currentThread === 'jobs') {
                     jobService.getJobsMessage(senderID, languages.value, user.location);
@@ -305,7 +309,7 @@ function processMessageFromPage(event) {
             // Location
             else if (location && location.confidence > 0.9) {
                 resetIdkMessages();
-                userService.setLocation(location.value);
+                user.location = location.value;
 
                 // User has entered the jobs thread and specified their location for the first time
                 if (currentThread === 'jobs') {
