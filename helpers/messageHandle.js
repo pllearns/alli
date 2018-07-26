@@ -187,6 +187,7 @@ function processMessageFromPage(event) {
             // Events
             else if (events && events.confidence > 0.7) {
                 resetIdkMessages();
+                threadService.setCurrentThread('events');
                 const messageData = eventService.getFilterOptions(senderID);
                 callSendAPI(messageData);
             }
