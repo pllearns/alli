@@ -92,6 +92,7 @@ function processMessageFromPage(event) {
         const gratitude = nlpService.intentDefined(message.nlp, 'gratitude');
         const offensive = nlpService.intentDefined(message.nlp, 'offensive');
         const apology = nlpService.intentDefined(message.nlp, 'apology');
+        const mentor = nlpService.intentDefined(message.nlp, 'mentor');
 
         // After offensive comment, Alli will shun the user until they apologize
         if (silentTreatment) {
@@ -242,6 +243,20 @@ function processMessageFromPage(event) {
             }
 
             // Mentor
+            else if (mentor && mentor.confidence > 0.7) {
+                resetIdkMessages();
+                messageService.sendTextMessage(senderID, "A mentor can be a great asset in reaching the next level of your career.");
+                setTimeout(() => {
+                    const messageData = mentorService.getMentorForms(senderID);
+                    callSendAPI(messageData);
+
+                    setTimeout(() => {
+                        messageService.sendTextMessage(senderID, "Just fill out the form above and we'll match you with someone that needs your guidance. \n \nSimple as that!");
+                    }, 3000);
+                }, 3000);
+            }
+
+            // Mentee
             else if (mentee && mentee.confidence > 0.7) {
                 resetIdkMessages();
                 messageService.sendTextMessage(senderID, "A mentor can be a great asset in reaching the next level of your career.");
