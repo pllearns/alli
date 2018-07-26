@@ -188,7 +188,13 @@ function processMessageFromPage(event) {
                 resetIdkMessages();
                 threadService.setCurrentThread('events');
                 const messageData = eventService.getFilterOptions(senderID);
-                callSendAPI(messageData);
+                if (user.location) {
+                    threadService.setCurrentThread(previousThread);
+                    callSendAPI(messageData);
+                } else {
+                    messageService.sendTextMessage(senderID, `Where do you want to meetup?`);
+                }
+
             }
 
             // Recruiting
