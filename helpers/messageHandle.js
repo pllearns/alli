@@ -188,7 +188,7 @@ function processMessageFromPage(event) {
                 resetIdkMessages();
                 threadService.setCurrentThread('events');
                 const messageData = eventService.getFilterOptions(senderID);
-                if (user.location) {
+                if (location && location.confidence) {
                     threadService.setCurrentThread(previousThread);
                     callSendAPI(messageData);
                 } else {
