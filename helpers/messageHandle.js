@@ -189,8 +189,8 @@ function processMessageFromPage(event) {
                 resetIdkMessages();
                 threadService.setCurrentThread('events');
                 const messageData = eventService.getFilterOptions(senderID);
-                meetupService.getEvents(messageData);
                 callSendAPI(messageData);
+                meetupService.getEvents(messageData);
             }
 
             // Recruiting
