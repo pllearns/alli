@@ -24,12 +24,8 @@ function getEvents(category, recipientId) {
             messageService.sendTextMessage(recipientId, `Here are some upcoming events!`);
             callSendAPI(message);
         } else {
-            const message = `Oh no.. it doesn't appear there are any upcoming events of that type in ${data.city.city}!`;
+            const message = `Oh no.. it doesn't appear there are any upcoming events of that type!`;
             messageService.sendTextMessage(recipientId, message);
-            setTimeout(() => {
-                const message = `Do you want to search for general tech events instead?`;
-                messageService.sendTextMessage(recipientId, message);
-            }, 3000);
         }
 
     });
