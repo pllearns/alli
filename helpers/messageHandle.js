@@ -67,12 +67,10 @@ function processMessageFromPage(event) {
         message = event.message,
         currentThread = threadService.getCurrentThread();
 
-    let messageText = message.text;
+    let messageText = null;
 
     let user = userService.getUser(senderID);
     if (!user) { user = userService.newUser(senderID); }
-
-    console.log(user);
 
     message.quick_reply ? handleQuickReplyResponse(event) : messageText = message.text;
 
