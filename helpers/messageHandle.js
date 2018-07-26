@@ -76,7 +76,9 @@ function processMessageFromPage(event) {
         message = event.message,
         currentThread = threadService.getCurrentThread();
 
-    const messageText = message.text;
+    let messageText = message.text;
+
+    message.quick_reply ? handleQuickReplyResponse(event) : messageText = message.text;
 
     if (messageText) {
         const greeting = nlpService.intentDefined(message.nlp, 'greetings');
