@@ -21,7 +21,7 @@ function getEvents(category, recipientId) {
         if (data.events.length) {
             const payloadElements = _getPayloadElements(data.events);
             const message = _getMessage(payloadElements, recipientId);
-            messageService.sendTextMessage(recipientId, `Here are some upcoming events in ${data.city.city}!`);
+            messageService.sendTextMessage(recipientId, `Here are some upcoming events!`);
             callSendAPI(message);
         } else {
             const message = `Oh no.. it doesn't appear there are any upcoming events of that type in ${data.city.city}!`;
