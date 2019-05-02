@@ -1,5 +1,7 @@
 # AlliBot: the facebook page and messenger bot for tech allies
 
+[![BCH compliance](https://bettercodehub.com/edge/badge/pllearns/alli?branch=master)](https://bettercodehub.com/)
+
 ## Inspiration
 **Opportunities for underserved communities in tech are still tough to come by.** 
 My partner in hacking, Alissa and I thought that the best way to connect communities to tech, would be to serve those communities with the greatest obstacles to get through the leaky pipeline into tech. We felt that using Facebook Messenger and its bot capabilities would enable us to take this inspiration and create conversations that could do the work. 
